@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './loginPage.dart';
 import './SignupPage.dart';
+import '../Home/homePage.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({Key? key}) : super(key: key);
@@ -74,6 +75,54 @@ class _SigninPageState extends State<SigninPage> {
                     style: ButtonStyle(),
                   ),
                 ),
+                Container(
+                  // minW: 200.0,
+                  height: 45.0,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.black,
+                      elevation: 20,
+                      backgroundColor: Color(0xff3C615A),
+                      // side: BorderSide(
+                      //   width: 3,
+                      //   color: Color(0xff5FB28B),
+                      // ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      // onPrimary: Color(0xff1F3040),
+                    ),
+                    child: Stack(
+                      children: <Widget>[
+                        // Stroked text as border.
+                        Text(
+                          'Sign In',
+                          style: TextStyle(
+                            fontSize: 20,
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..strokeWidth = 3
+                              ..color = Colors.black87,
+                          ),
+                        ),
+                        // Solid text as fill.
+                        Text(
+                          'Sign In',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.grey[300],
+                          ),
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      //SENDS THE USER TO THE SIGN UP PAGE
+                      // Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(username: 'dfdf'),));
+                    },
+                  ),
+                ),
+                SizedBox(height: 15,),
                 LoginWidgets.loginElevatedButtons('Back', context, FitWork()),
               ],
             )
@@ -83,3 +132,24 @@ class _SigninPageState extends State<SigninPage> {
     );
   }
 }
+//                  ElevatedButton(
+//                       onPressed: () {
+//                         //TODO: Firestore create a new record code
+//
+//                         Map<String, dynamic> newBook =
+//                         new Map<String, dynamic>();
+//                         newBook["title"] = titleController.text;
+//                         newBook["author"] = authorController.text;
+//
+//                         FirebaseFirestore.instance
+//                             .collection("books")
+//                             .add(newBook)
+//                             .whenComplete(() {
+//                           Navigator.of(context).pop();
+//                         });
+//                       },
+//                       child: Text(
+//                         "save",
+//                         style: TextStyle(color: Colors.white),
+//                       ),
+//                     ),

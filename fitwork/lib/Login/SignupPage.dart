@@ -34,8 +34,8 @@ class _SignupPageState extends State<SignupPage> {
             children: [
               Image.asset(
                 'assets/images/appicon.png',
-                height: 150,
-                width: 150,
+                height: 100,
+                width: 100,
               ),
               SizedBox(
                 height: 20,
@@ -81,6 +81,8 @@ class _SignupPageState extends State<SignupPage> {
                       style: ButtonStyle(),
                     ),
                   ),
+                  LoginWidgets.loginElevatedButtons('Register', context, SigninPage()),
+                  SizedBox(height: 15,),
                   LoginWidgets.loginElevatedButtons('Back', context, FitWork()),
                 ],
               )
