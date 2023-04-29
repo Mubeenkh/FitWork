@@ -132,24 +132,4 @@ class _SigninPageState extends State<SigninPage> {
     );
   }
 }
-//                  ElevatedButton(
-//                       onPressed: () {
-//                         //TODO: Firestore create a new record code
-//
-//                         Map<String, dynamic> newBook =
-//                         new Map<String, dynamic>();
-//                         newBook["title"] = titleController.text;
-//                         newBook["author"] = authorController.text;
-//
-//                         FirebaseFirestore.instance
-//                             .collection("books")
-//                             .add(newBook)
-//                             .whenComplete(() {
-//                           Navigator.of(context).pop();
-//                         });
-//                       },
-//                       child: Text(
-//                         "save",
-//                         style: TextStyle(color: Colors.white),
-//                       ),
-//                     ),
+

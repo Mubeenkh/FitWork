@@ -10,9 +10,15 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+
+  TextEditingController usernameController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
 
       home: Scaffold(
 
@@ -51,15 +57,15 @@ class _SignupPageState extends State<SignupPage> {
                 height: 20,
               ),
 
-              LoginWidgets.loginTextField("Username"),
+              signupTextField("Username",usernameController),
               SizedBox(
                 height: 20,
               ),
-              LoginWidgets.loginTextField("Password"),
+              signupTextField("Password",passwordController),
               SizedBox(
                 height: 20,
               ),
-              LoginWidgets.loginTextField("Email"),
+              signupTextField("Email",emailController),
               SizedBox(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -81,7 +87,50 @@ class _SignupPageState extends State<SignupPage> {
                       style: ButtonStyle(),
                     ),
                   ),
-                  LoginWidgets.loginElevatedButtons('Register', context, SigninPage()),
+                  //
+                  //TODO: INSERT THE DATA TO THE DATABASE
+                  Container(
+                    // minW: 200.0,
+                    height: 45.0,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.black,
+                        elevation: 20,
+                        backgroundColor: Color(0xff3C615A),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Stack(
+                        children: <Widget>[
+                          // Stroked text as border.
+                          Text(
+                            'Register',
+                            style: TextStyle(
+                              fontSize: 20,
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 3
+                                ..color = Colors.black87,
+                            ),
+                          ),
+                          // Solid text as fill.
+                          Text(
+                            'Register',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.grey[300],
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        //TODO: SAVE DATA THEN SENDS THE USER TO THE SIGN UP PAGE
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SigninPage(),));
+                      },
+                    ),
+                  ),
                   SizedBox(height: 15,),
                   LoginWidgets.loginElevatedButtons('Back', context, FitWork()),
                 ],
@@ -93,3 +142,77 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
+
+Widget signupTextField(buttonText, textfieldController) {
+  return Column(
+    // mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Stack(
+        children: <Widget>[
+          // Stroked text as border.
+          Text(
+            buttonText,
+            style: TextStyle(
+              fontSize: 26,
+              foreground: Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 3
+                ..color = Colors.black,
+            ),
+          ),
+          // Solid text as fill.
+          Text(
+            buttonText,
+            style: TextStyle(
+              fontSize: 26,
+              color: Colors.grey[300],
+            ),
+          ),
+        ],
+      ),
+      TextField(
+        controller: textfieldController,
+        decoration: InputDecoration(
+          hintText: buttonText,
+          // labelText: buttonText,
+          // labelStyle: ,
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
+              borderRadius: BorderRadius.circular(10)),
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
+              borderRadius: BorderRadius.circular(10)),
+          errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+              borderRadius: BorderRadius.circular(10)),
+          filled: true,
+          fillColor: Color(0xffEDEDED),
+        ),
+      ),
+    ],
+  );
+}
+ // ElevatedButton(
+ //      onPressed: () {
+ //        //TODO: Firestore create a new record code
+ //
+ //        Map<String, dynamic> newBook =
+ //        new Map<String, dynamic>();
+ //        newBook["title"] = titleController.text;
+ //        newBook["author"] = authorController.text;
+ //
+ //        FirebaseFirestore.instance
+ //            .collection("books")
+ //            .add(newBook)
+ //            .whenComplete(() {
+ //          Navigator.of(context).pop();
+ //        });
+ //      },
+ //      child: Text(
+ //        "save",
+ //        style: TextStyle(color: Colors.white),
+ //      ),
+ //    ),

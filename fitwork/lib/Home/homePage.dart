@@ -36,6 +36,8 @@ class _HomePageState extends State<HomePage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          //1F3040
+          //5FB28B
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -57,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                   initialDirection: CompassDirection.north,
               ),
               label: 'Discover',
-              backgroundColor: Colors.blueGrey
+              backgroundColor: Color(0xff94A187),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.run_circle_outlined,size: 50,),
