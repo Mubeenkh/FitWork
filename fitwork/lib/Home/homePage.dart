@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:compass_icon/compass_icon.dart';
+import '../Login/loginPage.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -31,6 +32,49 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Future<void> _logoutDialog(BuildContext context) {
+      return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('W'),
+            content: const Text('A dialog is a type of modal window that\n'
+                'appears in front of app content to\n'
+                'provide critical information, or prompt\n'
+                'for a decision to be made.'),
+            actions: <Widget>[
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: const Text('Disable'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: const Text('Enable'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    void _sendHome() {
+      setState(() {
+        _selectedIndex = 2;
+      });
+    }
+
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -42,7 +86,10 @@ class _HomePageState extends State<HomePage> {
             title: Align(
               alignment: Alignment.center,
               child:
-                Image.asset('assets/images/logo.png',fit: BoxFit.cover,height: 50),
+                GestureDetector(
+                  onTap: () => _sendHome(),
+                  child: Image.asset('assets/images/logo.png',fit: BoxFit.cover,height: 50),
+                )
             ),
             flexibleSpace: Container(
               decoration: BoxDecoration(
@@ -57,6 +104,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 )
               ),
+
             ),
 
           ),
@@ -258,7 +306,16 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          TextButton(onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => FitWork(),));
+          }, child: Text('Sign Out'))
+        ],
+      ),
+    );
   }
 }
 
