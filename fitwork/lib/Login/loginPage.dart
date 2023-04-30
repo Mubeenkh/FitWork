@@ -107,29 +107,7 @@ class LoginWidgets {
           ),
           // onPrimary: Color(0xff1F3040),
         ),
-        child: Stack(
-          children: <Widget>[
-            // Stroked text as border.
-            Text(
-              buttonText,
-              style: TextStyle(
-                fontSize: 30,
-                foreground: Paint()
-                  ..style = PaintingStyle.stroke
-                  ..strokeWidth = 3
-                  ..color = Colors.black,
-              ),
-            ),
-            // Solid text as fill.
-            Text(
-              buttonText,
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.grey[300],
-              ),
-            ),
-          ],
-        ),
+        child: stackedText(buttonText, 30, 4),
         onPressed: () {
           //SENDS THE USER TO THE SIGN UP PAGE
           Navigator.push(
@@ -142,38 +120,51 @@ class LoginWidgets {
     );
   }
 
-  static Widget loginTextField(buttonText) {
+  static Widget loginTextField(buttonText, currentController) {
     return Column(
       // mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Stack(
-          children: <Widget>[
-            // Stroked text as border.
-            Text(
-              buttonText,
-              style: TextStyle(
-                fontSize: 26,
-                foreground: Paint()
-                  ..style = PaintingStyle.stroke
-                  ..strokeWidth = 3
-                  ..color = Colors.black,
-              ),
-            ),
-            // Solid text as fill.
-            Text(
-              buttonText,
-              style: TextStyle(
-                fontSize: 26,
-                color: Colors.grey[300],
-              ),
-            ),
-          ],
-        ),
+        stackedText(buttonText, 26.0, 3.0),
         TextField(
+          controller: currentController,
           decoration: InputDecoration(
             hintText: buttonText,
-            labelText: buttonText,
+            // labelText: buttonText,
+            // labelStyle: ,
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
+                borderRadius: BorderRadius.circular(10)),
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
+                borderRadius: BorderRadius.circular(10)),
+            errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                borderRadius: BorderRadius.circular(10)),
+            filled: true,
+            fillColor: Color(0xffEDEDED),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget passwordTextField(buttonText, textfieldController) {
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LoginWidgets.stackedText(buttonText, 26, 4),
+        TextField(
+          obscureText: true,
+          enableSuggestions: false,
+          autocorrect: false,
+          controller: textfieldController,
+          decoration: InputDecoration(
+            hintText: buttonText,
+            // labelText: buttonText,
             // labelStyle: ,
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
@@ -204,44 +195,45 @@ class LoginWidgets {
           shadowColor: Colors.black,
           elevation: 20,
           backgroundColor: Color(0xff3C615A),
-          // side: BorderSide(
-          //   width: 3,
-          //   color: Color(0xff5FB28B),
-          // ),
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          // onPrimary: Color(0xff1F3040),
         ),
-        child: Stack(
-          children: <Widget>[
-            // Stroked text as border.
-            Text(
-              buttonText,
-              style: TextStyle(
-                fontSize: 20,
-                foreground: Paint()
-                  ..style = PaintingStyle.stroke
-                  ..strokeWidth = 3
-                  ..color = Colors.black87,
-              ),
-            ),
-            // Solid text as fill.
-            Text(
-              buttonText,
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.grey[300],
-              ),
-            ),
-          ],
-        ),
+        child: stackedText(buttonText, 20, 3),
+
         onPressed: () {
           //SENDS THE USER TO THE SIGN UP PAGE
-          // Navigator.pop(context);
           Navigator.push(context, MaterialPageRoute(builder: (context) => page,));
         },
       ),
+    );
+  }
+
+  static Widget stackedText(String text,double textSize, double borderSize) {
+
+    return Stack(
+      children: <Widget>[
+        // Stroked text as border.
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: textSize,
+            foreground: Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = borderSize
+              ..color = Colors.black,
+          ),
+        ),
+        // Solid text as fill.
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: textSize,
+            color: Colors.grey[300],
+          ),
+        ),
+      ],
     );
   }
 }

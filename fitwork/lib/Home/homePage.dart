@@ -29,22 +29,37 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          //1F3040
-          //5FB28B
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/justlogo.png',fit: BoxFit.cover,height: 60),
-            ],
-          ),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0),
+          child: AppBar(
+            //1F3040
+            //5FB28B
+            title: Align(
+              alignment: Alignment.center,
+              child:
+                Image.asset('assets/images/logo.png',fit: BoxFit.cover,height: 50),
+            ),
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Color(0xff1F3040),
+                    Color(0xff3C6B62),
+                    Color(0xff5FB28B),
+                    Color(0xff5FB28B),
+                  ],
+                )
+              ),
+            ),
 
+          ),
         ),
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
@@ -59,31 +74,31 @@ class _HomePageState extends State<HomePage> {
                   initialDirection: CompassDirection.north,
               ),
               label: 'Discover',
-              backgroundColor: Color(0xff94A187),
+              backgroundColor: Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.run_circle_outlined,size: 50,),
               label: 'Workout',
-              backgroundColor: Colors.blueGrey
+              backgroundColor: Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.home,size: 50,),
               label: 'Home',
-              backgroundColor: Colors.blueGrey
+              backgroundColor: Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.food_bank,size: 50,),
               label: 'Nutrition',
-              backgroundColor: Colors.blueGrey
+              backgroundColor:Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person,size: 50,),
               label: 'Profile',
-              backgroundColor: Colors.blueGrey
+              backgroundColor: Color(0xff3C6B62),
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Colors.black54,
           onTap: _onItemTapped,
         ),
       ),
@@ -128,7 +143,88 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Image.asset(name)
+          Container(
+            height: 100,
+            width: double.infinity,
+            color: Colors.grey[400],
+            child: Align(
+              alignment: Alignment.center,
+                child: Text('Workout picture from api',style: TextStyle(fontSize: 25),)
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 200,
+                  width: 100,
+                  color: Colors.grey[400],
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Text('Last Workout: Date',style: TextStyle(fontSize: 25),)
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Container(
+                  height: 200,
+                  width: 100,
+                  color: Colors.grey[400],
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Text('Motivational quote from api',style: TextStyle(fontSize: 25),)
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 200,
+                  width: 100,
+                  color: Colors.grey[400],
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Text('Timer',style: TextStyle(fontSize: 25),)
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Container(
+                  height: 200,
+                  width: 100,
+                  color: Colors.grey[400],
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Text('Picture of sad dog',style: TextStyle(fontSize: 25),)
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -161,234 +257,3 @@ class _ProfileState extends State<Profile> {
 
 
 
-// class HomePage extends StatefulWidget {
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
-//
-// class _HomePageState extends State<HomePage> {
-//   TextEditingController titleController = new TextEditingController();
-//   TextEditingController authorController = new TextEditingController();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Flutter Firestore CRUD"),
-//       ),
-//       body: BookList(),
-//       // ADD (Create)
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           showDialog(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return AlertDialog(
-//                   content: Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: <Widget>[
-//                       Text("Add"),
-//                       Padding(
-//                         padding: EdgeInsets.only(top: 10),
-//                         child: Text(
-//                           "Title: ",
-//                           textAlign: TextAlign.start,
-//                         ),
-//                       ),
-//                       TextField(
-//                         controller: titleController,
-//                       ),
-//                       Padding(
-//                         padding: EdgeInsets.only(top: 20),
-//                         child: Text("Author: "),
-//                       ),
-//                       TextField(
-//                         controller: authorController,
-//                       ),
-//                     ],
-//                   ),
-//                   actions: <Widget>[
-//                     Padding(
-//                       padding: EdgeInsets.symmetric(horizontal: 10),
-//                       child: ElevatedButton(
-//                         // color: Colors.red,
-//                         onPressed: () {
-//                           Navigator.of(context).pop();
-//                         },
-//                         child: Text(
-//                           "Undo",
-//                           style: TextStyle(color: Colors.white),
-//                         ),
-//                       ),
-//                     ),
-//
-//                     //Add Button
-//
-//                     ElevatedButton(
-//                       onPressed: () {
-//                         //TODO: Firestore create a new record code
-//
-//                         Map<String, dynamic> newBook =
-//                         new Map<String, dynamic>();
-//                         newBook["title"] = titleController.text;
-//                         newBook["author"] = authorController.text;
-//
-//                         FirebaseFirestore.instance
-//                             .collection("books")
-//                             .add(newBook)
-//                             .whenComplete(() {
-//                           Navigator.of(context).pop();
-//                         });
-//                       },
-//                       child: Text(
-//                         "save",
-//                         style: TextStyle(color: Colors.white),
-//                       ),
-//                     ),
-//                   ],
-//                 );
-//               });
-//         },
-//         tooltip: 'Add Title',
-//         child: Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
-//
-// class BookList extends StatelessWidget {
-//   TextEditingController titleController = new TextEditingController();
-//   TextEditingController authorController = new TextEditingController();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     //TODO: Retrive all records in collection from Firestore
-//     return StreamBuilder<QuerySnapshot>(
-//       stream: FirebaseFirestore.instance.collection('books').snapshots(),
-//       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-//         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-//         switch (snapshot.connectionState) {
-//           case ConnectionState.waiting:
-//             return Center(
-//               child: CircularProgressIndicator(),
-//             );
-//           default:
-//             return new ListView(
-//               padding: EdgeInsets.only(bottom: 80),
-//               children: snapshot.data!.docs.map((DocumentSnapshot document) {
-//                 return Padding(
-//                   padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-//                   child: Card(
-//                     child: ListTile(
-//                       onTap: () {
-//                         showDialog(
-//                             context: context,
-//                             builder: (BuildContext context) {
-//                               return AlertDialog(
-//                                 title: Text("Update Dilaog"),
-//                                 content: Column(
-//                                   crossAxisAlignment: CrossAxisAlignment.start,
-//                                   children: <Widget>[
-//                                     Text(
-//                                       "Title: ",
-//                                       textAlign: TextAlign.start,
-//                                     ),
-//                                     TextField(
-//                                       controller: titleController,
-//                                       decoration: InputDecoration(
-//                                         hintText: document['title'],
-//                                       ),
-//                                     ),
-//                                     Padding(
-//                                       padding: EdgeInsets.only(top: 20),
-//                                       child: Text("Author: "),
-//                                     ),
-//                                     TextField(
-//                                       controller: authorController,
-//                                       decoration: InputDecoration(
-//                                         hintText: document['author'],
-//                                       ),
-//                                     ),
-//                                   ],
-//                                 ),
-//                                 actions: <Widget>[
-//                                   Padding(
-//                                     padding:
-//                                     EdgeInsets.symmetric(horizontal: 10),
-//                                     child: ElevatedButton(
-//                                       // color: Colors.red,
-//                                       onPressed: () {
-//                                         Navigator.of(context).pop();
-//                                       },
-//                                       child: Text(
-//                                         "Undo",
-//                                         style: TextStyle(color: Colors.white),
-//                                       ),
-//                                     ),
-//                                   ),
-//                                   // Update Button
-//                                   ElevatedButton(
-//                                       child: Text(
-//                                         "Update",
-//                                         style: TextStyle(color: Colors.white),
-//                                       ),
-//                                       onPressed: () {
-//                                         //TODO: Firestore update a record code
-//
-//                                         Map<String, dynamic> updateBook =
-//                                         new Map<String, dynamic>();
-//                                         updateBook["title"] =
-//                                             titleController.text;
-//                                         updateBook["author"] =
-//                                             authorController.text;
-//
-//                                         // Updae Firestore record information regular way
-//                                         FirebaseFirestore.instance
-//                                             .collection("books")
-//                                             .doc(document.id)
-//                                             .update(updateBook)
-//                                             .whenComplete(() {
-//                                           Navigator.of(context).pop();
-//                                         });
-//
-//                                         child:
-//                                         Text(
-//                                           "update",
-//                                           style: TextStyle(color: Colors.white),
-//                                         );
-//                                       }),
-//                                 ],
-//                               );
-//                             });
-//                       },
-//                       title: new Text("Title " + document['title']),
-//                       subtitle: new Text("Author " + document['author']),
-//                       trailing:
-//                       // Delete Button
-//                       InkWell(
-//                         onTap: () {
-//                           //TODO: Firestore delete a record code
-//                           FirebaseFirestore.instance
-//                               .collection("books")
-//                               .doc(document.id)
-//                               .delete()
-//                               .catchError((e) {
-//                             print(e);
-//                           });
-//                         },
-//                         child: Padding(
-//                           padding: EdgeInsets.symmetric(
-//                               horizontal: 20, vertical: 10),
-//                           child: Icon(Icons.delete),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 );
-//               }).toList(),
-//             );
-//         }
-//       },
-//     );
-//   }
-// }
