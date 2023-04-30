@@ -116,10 +116,13 @@ class _SigninPageState extends State<SigninPage> {
                       ],
                     ),
                     onPressed: () {
-                      //SENDS THE USER TO THE SIGN UP PAGE
+                      //SENDS THE USER TO THE HOME PAGE
                       // Navigator.pop(context);
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(username: 'dfdf'),));
-                    },
+
+
+
+                      },
                   ),
                 ),
                 SizedBox(height: 15,),

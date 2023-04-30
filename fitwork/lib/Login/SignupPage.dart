@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import './loginPage.dart';
 import './SigninPage.dart';
 
@@ -10,7 +12,6 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-
   TextEditingController usernameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
@@ -19,20 +20,19 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
       home: Scaffold(
-
         body: Container(
           padding: EdgeInsets.all(40),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xff1F3040),
-                  Color(0xff5FB28B),
-                  Color(0xff5FB28B),
-                ]),
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xff1F3040),
+                Color(0xff5FB28B),
+                Color(0xff5FB28B),
+              ],
+            ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -56,17 +56,17 @@ class _SignupPageState extends State<SignupPage> {
               SizedBox(
                 height: 20,
               ),
+              signupTextField("Email", emailController),
+              SizedBox(height: 20,),
+              signupTextField("Username", usernameController),
+              SizedBox(
+                height: 20,
+              ),
+              signupTextField("Password", passwordController),
+              SizedBox(
+                // height: 20,
+              ),
 
-              signupTextField("Username",usernameController),
-              SizedBox(
-                height: 20,
-              ),
-              signupTextField("Password",passwordController),
-              SizedBox(
-                height: 20,
-              ),
-              signupTextField("Email",emailController),
-              SizedBox(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -75,14 +75,15 @@ class _SignupPageState extends State<SignupPage> {
                     child: TextButton(
                       onPressed: () {
                         //sends you to Sign in page
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SigninPage(),));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SigninPage(),
+                            ));
                       },
                       child: Text(
                         'Already to have an account!',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black54
-                        ),
+                        style: TextStyle(fontSize: 20, color: Colors.black54),
                       ),
                       style: ButtonStyle(),
                     ),
@@ -126,12 +127,33 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       onPressed: () {
                         //TODO: SAVE DATA THEN SENDS THE USER TO THE SIGN UP PAGE
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SigninPage(),));
+//                        Map<String, dynamic> newBook =
+//        new Map<String, dynamic>();
+//        newBook["title"] = titleController.text;
+//        newBook["author"] = authorController.text;
+                        Map<String, dynamic> User = new Map<String,dynamic>();
+                        User['username'] = usernameController.text;
+                        User['email'] = emailController.text;
+                        User['password'] = passwordController.text;
+                        //todo: send to database
+                        FirebaseFirestore.instance
+                             .collection("user")
+                             .add(User)
+                             .whenComplete(() {
+                           Navigator.of(context).pop();
+                         });
+                        //TODO: SEND TO NEXT PAGE
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SigninPage(),
+                            ));
                       },
                     ),
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                   LoginWidgets.loginElevatedButtons('Back', context, FitWork()),
                 ],
               )
@@ -142,7 +164,9 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
-
+// obscureText: true,
+// enableSuggestions: false,
+// autocorrect: false,
 Widget signupTextField(buttonText, textfieldController) {
   return Column(
     // mainAxisAlignment: MainAxisAlignment.start,
@@ -177,6 +201,7 @@ Widget signupTextField(buttonText, textfieldController) {
           hintText: buttonText,
           // labelText: buttonText,
           // labelStyle: ,
+
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
               borderRadius: BorderRadius.circular(10)),
@@ -195,24 +220,24 @@ Widget signupTextField(buttonText, textfieldController) {
     ],
   );
 }
- // ElevatedButton(
- //      onPressed: () {
- //        //TODO: Firestore create a new record code
- //
- //        Map<String, dynamic> newBook =
- //        new Map<String, dynamic>();
- //        newBook["title"] = titleController.text;
- //        newBook["author"] = authorController.text;
- //
- //        FirebaseFirestore.instance
- //            .collection("books")
- //            .add(newBook)
- //            .whenComplete(() {
- //          Navigator.of(context).pop();
- //        });
- //      },
- //      child: Text(
- //        "save",
- //        style: TextStyle(color: Colors.white),
- //      ),
- //    ),
+// ElevatedButton(
+//      onPressed: () {
+//        //TODO: Firestore create a new record code
+//
+//        Map<String, dynamic> newBook =
+//        new Map<String, dynamic>();
+//        newBook["title"] = titleController.text;
+//        newBook["author"] = authorController.text;
+//
+//        FirebaseFirestore.instance
+//            .collection("books")
+//            .add(newBook)
+//            .whenComplete(() {
+//          Navigator.of(context).pop();
+//        });
+//      },
+//      child: Text(
+//        "save",
+//        style: TextStyle(color: Colors.white),
+//      ),
+//    ),
