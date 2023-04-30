@@ -105,6 +105,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+///-------------------------------------Discover Page -------------------------------------///
 class Discover extends StatefulWidget {
   const Discover({Key? key}) : super(key: key);
 
@@ -119,6 +121,7 @@ class _DiscoverState extends State<Discover> {
   }
 }
 
+///-------------------------------------Workout Page -------------------------------------///
 class Workout extends StatefulWidget {
   const Workout({Key? key}) : super(key: key);
 
@@ -133,6 +136,7 @@ class _WorkoutState extends State<Workout> {
   }
 }
 
+///-------------------------------------Home Page -------------------------------------///
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -228,6 +232,7 @@ class _HomeState extends State<Home> {
   }
 }
 
+///-------------------------------------Nutrition Page -------------------------------------///
 class Nutrition extends StatefulWidget {
   const Nutrition({Key? key}) : super(key: key);
 
@@ -241,6 +246,8 @@ class _NutritionState extends State<Nutrition> {
     return const Placeholder();
   }
 }
+
+///-------------------------------------Profile Page -------------------------------------///
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
