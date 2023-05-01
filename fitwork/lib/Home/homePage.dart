@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:compass_icon/compass_icon.dart';
 import '../Login/loginPage.dart';
 import '../Discover/discoverPage.dart';
+import '../Workout/WorkoutPage.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -157,46 +158,7 @@ class _HomePageState extends State<HomePage> {
 
 
 
-///-------------------------------------Workout Page -------------------------------------///
-class Workout extends StatefulWidget {
-  const Workout({Key? key}) : super(key: key);
 
-  @override
-  State<Workout> createState() => _WorkoutState();
-}
-
-class _WorkoutState extends State<Workout> {
-
-  Future _showCalendar() async {
-    return await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2500),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              // brightness: Colors.deepOrange,
-              primary: Color(0xff5FB28B),
-              onSecondary: Color(0xff5FB28B),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ElevatedButton(onPressed: _showCalendar, child: Text('SELECT DATE'))
-      ],
-    );
-  }
-}
 
 ///-------------------------------------Home Page -------------------------------------///
 class Home extends StatefulWidget {
