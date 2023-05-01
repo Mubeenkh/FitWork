@@ -26,8 +26,25 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Image.asset('assets/images/logo.png',
-                    fit: BoxFit.cover, height: 50),
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Back'),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Image.asset('assets/images/logo.png',
+                          fit: BoxFit.cover, height: 50),
+                    ),
+                  ],
+                ),
               ),
             ),
             flexibleSpace: Container(
@@ -78,17 +95,14 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                   // height: double.infinity,
                   child: ListView(
                     children: [
-                      cardContent(),
-                      cardContent(),
-                      cardContent(),
-                      cardContent(),
-                      cardContent(),
-                      cardContent(),
+                      cardContent('Bench Dips'),
+                      cardContent('Bench Dips'),
+                      cardContent('Bench Dips'),
+                      cardContent('Bench Dips'),
+                      cardContent('Bench Dips'),
                     ],
                   ),
                 )
-
-
               ],
             ),
           ),
@@ -98,18 +112,22 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
   }
 }
 
-Widget cardContent() {
+Widget cardContent(text) {
   return GestureDetector(
     onTap: () {
       print('workout time');
     },
     child: Card(
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: Colors.black54),
-      ),
+          side: BorderSide(color: Colors.black54),
+          borderRadius: BorderRadius.circular(20.0)),
+      // shape: CircleBorder(
+      //   side: BorderSide(color: Colors.white)
+      // ),
       child: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
           gradient: LinearGradient(
             colors: [
               Color(0xff3C6B62),
@@ -122,7 +140,7 @@ Widget cardContent() {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Bench Dips',
+              text,
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
