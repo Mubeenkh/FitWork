@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:compass_icon/compass_icon.dart';
 import '../Login/loginPage.dart';
+import '../Discover/discoverPage.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -154,20 +155,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-///-------------------------------------Discover Page -------------------------------------///
-class Discover extends StatefulWidget {
-  const Discover({Key? key}) : super(key: key);
 
-  @override
-  State<Discover> createState() => _DiscoverState();
-}
-
-class _DiscoverState extends State<Discover> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
 
 ///-------------------------------------Workout Page -------------------------------------///
 class Workout extends StatefulWidget {
@@ -178,9 +166,35 @@ class Workout extends StatefulWidget {
 }
 
 class _WorkoutState extends State<Workout> {
+
+  Future _showCalendar() async {
+    return await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2500),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              // brightness: Colors.deepOrange,
+              primary: Color(0xff5FB28B),
+              onSecondary: Color(0xff5FB28B),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [
+        ElevatedButton(onPressed: _showCalendar, child: Text('SELECT DATE'))
+      ],
+    );
   }
 }
 
@@ -310,6 +324,9 @@ class _ProfileState extends State<Profile> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
+          Container(
+
+          ),
           TextButton(onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => FitWork(),));
           }, child: Text('Sign Out'))

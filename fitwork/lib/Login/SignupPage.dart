@@ -45,6 +45,9 @@ class _SignupPageState extends State<SignupPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  SizedBox(
+                    height: 50,
+                  ),
                   Image.asset(
                     'assets/images/appicon.png',
                     height: 100,

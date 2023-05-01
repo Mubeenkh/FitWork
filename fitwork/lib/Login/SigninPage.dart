@@ -32,12 +32,15 @@ class _SigninPageState extends State<SigninPage> {
               ]),
         ),
         child: Container(
-          height: double.infinity,
+           height: double.infinity,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SizedBox(
+                  height: 50,
+                ),
                 Image.asset(
                   'assets/images/appicon.png',
                   height: 150,
