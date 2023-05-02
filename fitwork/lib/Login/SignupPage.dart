@@ -19,6 +19,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,15 +58,16 @@ class _SignupPageState extends State<SignupPage> {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: Text('Sign Up',
-                        style:
-                            TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+                        style: TextStyle(
+                            fontSize: 35, fontWeight: FontWeight.bold)),
                   ),
                   SizedBox(height: 20),
                   LoginWidgets.loginTextField("Email", emailController),
                   SizedBox(height: 20),
                   LoginWidgets.loginTextField("Username", usernameController),
                   SizedBox(height: 20),
-                  LoginWidgets.passwordTextField("Password", passwordController),
+                  LoginWidgets.passwordTextField(
+                      "Password", passwordController),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -82,7 +84,8 @@ class _SignupPageState extends State<SignupPage> {
                           },
                           child: Text(
                             'Already to have an account!',
-                            style: TextStyle(fontSize: 20, color: Colors.black54),
+                            style:
+                                TextStyle(fontSize: 20, color: Colors.black54),
                           ),
                           style: ButtonStyle(),
                         ),
@@ -117,29 +120,46 @@ class _SignupPageState extends State<SignupPage> {
                             //   // You can add data to Firebase Firestore here
                             // }
 
-                            if(usernameController.text != "" && usernameController.text != null &&
-                                emailController.text != "" && emailController.text != null &&
-                                passwordController.text != "" && passwordController.text != null) {
+                            if (usernameController.text != "" &&
+                                usernameController.text != null &&
+                                emailController.text != "" &&
+                                emailController.text != null &&
+                                passwordController.text != "" &&
+                                passwordController.text != null) {
+                              Map<String, dynamic> User =
+                                  new Map<String, dynamic>();
+                              User['username'] = usernameController.text;
+                              User['email'] = emailController.text;
+                              User['password'] = passwordController.text;
+                              // //todo: send to database
+                              // FirebaseFirestore.instance
+                              //     .collection("user")
+                              //     .add(User)
+                              //     .whenComplete(() {
+                              //   //TODO: SEND TO NEXT PAGE
+                              //   Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => SigninPage()),
+                              //   );
+                              // });
 
-                                Map<String, dynamic> User = new Map<String,
-                                    dynamic>();
-                                User['username'] = usernameController.text;
-                                User['email'] = emailController.text;
-                                User['password'] = passwordController.text;
-                                // //todo: send to database
-                                FirebaseFirestore.instance
-                                    .collection("user")
-                                    .add(User)
-                                    .whenComplete(() {
-                                  //TODO: SEND TO NEXT PAGE
+                              FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: emailController.text,
+                                      password: passwordController.text)
+                                  .then(
+                                (value) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => SigninPage()),
                                   );
-                                });
-
-                            }else {
+                                },
+                              ).onError((error, stackTrace) {
+                                print("Error ${error.toString()}");
+                              });
+                            } else {
                               // const snackBar = SnackBar(content: Text('Please fill up all fields'));
                               // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               Flushbar(
@@ -171,7 +191,8 @@ class _SignupPageState extends State<SignupPage> {
                       SizedBox(
                         height: 15,
                       ),
-                      LoginWidgets.loginElevatedButtons('Back', context, FitWork()),
+                      LoginWidgets.loginElevatedButtons(
+                          'Back', context, FitWork()),
                     ],
                   )
                 ],
@@ -183,6 +204,52 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
+  void checkAccounts() {
+    StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('user').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          default:
+            return new ListView(
+              padding: EdgeInsets.only(bottom: 80),
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                if (emailController.text.toString() ==
+                    document['email'].toString()) {
+                  // print(document['email'].toString());
+                  return Flushbar(
+                    flushbarPosition: FlushbarPosition.TOP,
+                    message: "account already exist",
+
+                    icon: Icon(
+                      Icons.info,
+                      size: 30.0,
+                      color: Colors.black,
+                    ),
+                    duration: Duration(seconds: 3),
+                    // leftBarIndicatorColor: Colors.green[900],
+                    // backgroundColor: Colors.black54,
+                    backgroundGradient: LinearGradient(
+                      colors: [
+                        Colors.red.shade500,
+                        Colors.red.shade300,
+                        Colors.red.shade100
+                      ],
+                      stops: [0.4, 0.7, 1],
+                    ),
+                  )..show(context);
+                }
+                return Text('ddfd');
+              }).toList(),
+            );
+        }
+      },
+    );
+  }
 }
 // ElevatedButton(
 //      onPressed: () {
