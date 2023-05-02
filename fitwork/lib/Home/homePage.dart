@@ -5,6 +5,7 @@ import 'package:compass_icon/compass_icon.dart';
 import '../Login/loginPage.dart';
 import '../Discover/discoverPage.dart';
 import '../Workout/WorkoutPage.dart';
+import '../Home/timerPage.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -224,13 +225,18 @@ class _HomeState extends State<Home> {
           Row(
             children: [
               Expanded(
-                child: Container(
-                  height: 200,
-                  width: 100,
-                  color: Colors.grey[400],
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Text('Timer',style: TextStyle(fontSize: 25),)
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TimerPage()));
+                  },
+                  child: Container(
+                    height: 200,
+                    width: 100,
+                    color: Colors.grey[400],
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Text('Timer',style: TextStyle(fontSize: 25),)
+                    ),
                   ),
                 ),
               ),
