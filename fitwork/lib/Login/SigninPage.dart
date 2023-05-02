@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import './loginPage.dart';
 import './SignupPage.dart';
 import '../Home/homePage.dart';
+import 'package:another_flushbar/flushbar.dart';
+
 
 class SigninPage extends StatefulWidget {
   const SigninPage({Key? key}) : super(key: key);
@@ -11,10 +14,27 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
+
+  static Future<User?> loginUsingEmailPassword(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
+        print("No user found for that email");
+      }
+    }
+    return user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +52,7 @@ class _SigninPageState extends State<SigninPage> {
               ]),
         ),
         child: Container(
-           height: double.infinity,
+          height: double.infinity,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,18 +76,20 @@ class _SigninPageState extends State<SigninPage> {
                     style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                   ),
                 ),
+
                 ///----------------------------------------------------------------
                 ///Text fields for user to input Username and Password (Maybe Email)
                 SizedBox(
                   height: 20,
                 ),
                 // signInTextField("Username"),
-                LoginWidgets.loginTextField("Username", usernameController),
+                LoginWidgets.loginTextField("Email", emailController),
                 SizedBox(
                   height: 20,
                 ),
                 // signInTextField("Password"),
                 LoginWidgets.loginTextField("Password", passwordController),
+
                 ///----------------------------------------------------------------
                 //TODO: send user to ForgotPasswordPage()
                 Column(
@@ -100,19 +122,48 @@ class _SigninPageState extends State<SigninPage> {
                           shadowColor: Colors.black,
                           elevation: 20,
                           backgroundColor: Color(0xff3C615A),
-
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                         child: LoginWidgets.stackedText('Sign In', 20.0, 3.0),
-                        onPressed: () {
+                        onPressed: () async {
                           //TODO: SENDS THE USER TO THE HOME PAGE
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(username: 'dfdf'),
-                              ));
+
+                          FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      HomePage(username: 'dfdf'),
+                                ),
+                              );
+                          }).onError((error, stackTrace) {
+                            print("Error ${error.toString()}");
+                            Flushbar(
+                              flushbarPosition: FlushbarPosition.TOP,
+                              message: "Wrong email and password",
+
+                              icon: Icon(
+                                Icons.info,
+                                size: 30.0,
+                                color: Colors.black,
+                              ),
+                              duration: Duration(seconds: 3),
+                              // leftBarIndicatorColor: Colors.green[900],
+                              // backgroundColor: Colors.black54,
+                              backgroundGradient: LinearGradient(
+                                colors: [
+                                  Colors.red.shade500,
+                                  Colors.red.shade300,
+                                  Colors.red.shade100
+                                ],
+                                stops: [0.4, 0.7, 1],
+                              ),
+                            )..show(context);
+                          });
+
+
                         },
                       ),
                     ),
@@ -120,7 +171,8 @@ class _SigninPageState extends State<SigninPage> {
                       height: 15,
                     ),
                     //TODO: sending back to loginPage()
-                    LoginWidgets.loginElevatedButtons('Back', context, FitWork()),
+                    LoginWidgets.loginElevatedButtons(
+                        'Back', context, FitWork()),
 
                     //TODO: Sending to SignUpPage() page
                     Row(
@@ -159,8 +211,6 @@ class _SigninPageState extends State<SigninPage> {
   }
 }
 
-
-
 /////////////////////
 
 // Widget signInTextField(buttonText) {
@@ -193,8 +243,7 @@ class _SigninPageState extends State<SigninPage> {
 //   );
 // }
 
-Widget stackedText(String text,double textSize, double borderSize) {
-
+Widget stackedText(String text, double textSize, double borderSize) {
   return Stack(
     children: <Widget>[
       // Stroked text as border.

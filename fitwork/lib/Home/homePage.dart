@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitwork/Login/SigninPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,15 +9,14 @@ import '../Discover/discoverPage.dart';
 import '../Workout/WorkoutPage.dart';
 
 class HomePage extends StatefulWidget {
-
   const HomePage({Key? key, required this.username}) : super(key: key);
   final String username;
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
   int _selectedIndex = 2;
 
   static const List<Widget> _widgetOptions = <Widget>[
@@ -34,7 +35,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     Future<void> _logoutDialog(BuildContext context) {
       return showDialog<void>(
         context: context,
@@ -76,7 +76,6 @@ class _HomePageState extends State<HomePage> {
       });
     }
 
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -86,29 +85,25 @@ class _HomePageState extends State<HomePage> {
             //1F3040
             //5FB28B
             title: Align(
-              alignment: Alignment.center,
-              child:
-                GestureDetector(
+                alignment: Alignment.center,
+                child: GestureDetector(
                   onTap: () => _sendHome(),
-                  child: Image.asset('assets/images/logo.png',fit: BoxFit.cover,height: 50),
-                )
-            ),
+                  child: Image.asset('assets/images/logo.png',
+                      fit: BoxFit.cover, height: 50),
+                )),
             flexibleSpace: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Color(0xff1F3040),
-                    Color(0xff3C6B62),
-                    Color(0xff5FB28B),
-                    Color(0xff5FB28B),
-                  ],
-                )
-              ),
-
+                  gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color(0xff1F3040),
+                  Color(0xff3C6B62),
+                  Color(0xff5FB28B),
+                  Color(0xff5FB28B),
+                ],
+              )),
             ),
-
           ),
         ),
         body: Center(
@@ -119,30 +114,45 @@ class _HomePageState extends State<HomePage> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: CompassIcon(
-                  Icon(Icons.arrow_circle_up,size: 50,),
-                  compassDirection: CompassDirection.north,
-                  initialDirection: CompassDirection.north,
+                Icon(
+                  Icons.arrow_circle_up,
+                  size: 50,
+                ),
+                compassDirection: CompassDirection.north,
+                initialDirection: CompassDirection.north,
               ),
               label: 'Discover',
               backgroundColor: Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.run_circle_outlined,size: 50,),
+              icon: Icon(
+                Icons.run_circle_outlined,
+                size: 50,
+              ),
               label: 'Workout',
               backgroundColor: Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.home,size: 50,),
+              icon: Icon(
+                Icons.home,
+                size: 50,
+              ),
               label: 'Home',
               backgroundColor: Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.food_bank,size: 50,),
+              icon: Icon(
+                Icons.food_bank,
+                size: 50,
+              ),
               label: 'Nutrition',
-              backgroundColor:Color(0xff3C6B62),
+              backgroundColor: Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person,size: 50,),
+              icon: Icon(
+                Icons.person,
+                size: 50,
+              ),
               label: 'Profile',
               backgroundColor: Color(0xff3C6B62),
             ),
@@ -155,10 +165,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-
-
 
 ///-------------------------------------Home Page -------------------------------------///
 class Home extends StatefulWidget {
@@ -182,9 +188,11 @@ class _HomeState extends State<Home> {
             width: double.infinity,
             color: Colors.grey[400],
             child: Align(
-              alignment: Alignment.center,
-                child: Text('Workout picture from api',style: TextStyle(fontSize: 25),)
-            ),
+                alignment: Alignment.center,
+                child: Text(
+                  'Workout picture from api',
+                  style: TextStyle(fontSize: 25),
+                )),
           ),
           SizedBox(
             height: 20,
@@ -198,8 +206,10 @@ class _HomeState extends State<Home> {
                   color: Colors.grey[400],
                   child: Align(
                       alignment: Alignment.center,
-                      child: Text('Last Workout: Date',style: TextStyle(fontSize: 25),)
-                  ),
+                      child: Text(
+                        'Last Workout: Date',
+                        style: TextStyle(fontSize: 25),
+                      )),
                 ),
               ),
               SizedBox(
@@ -212,8 +222,10 @@ class _HomeState extends State<Home> {
                   color: Colors.grey[400],
                   child: Align(
                       alignment: Alignment.center,
-                      child: Text('Motivational quote from api',style: TextStyle(fontSize: 25),)
-                  ),
+                      child: Text(
+                        'Motivational quote from api',
+                        style: TextStyle(fontSize: 25),
+                      )),
                 ),
               ),
             ],
@@ -230,8 +242,10 @@ class _HomeState extends State<Home> {
                   color: Colors.grey[400],
                   child: Align(
                       alignment: Alignment.center,
-                      child: Text('Timer',style: TextStyle(fontSize: 25),)
-                  ),
+                      child: Text(
+                        'Timer',
+                        style: TextStyle(fontSize: 25),
+                      )),
                 ),
               ),
               SizedBox(
@@ -244,8 +258,10 @@ class _HomeState extends State<Home> {
                   color: Colors.grey[400],
                   child: Align(
                       alignment: Alignment.center,
-                      child: Text('Picture of sad dog',style: TextStyle(fontSize: 25),)
-                  ),
+                      child: Text(
+                        'Picture of sad dog',
+                        style: TextStyle(fontSize: 25),
+                      )),
                 ),
               ),
             ],
@@ -286,17 +302,24 @@ class _ProfileState extends State<Profile> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Container(
+          Container(),
+          TextButton(
+              onPressed: () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => FitWork(),
+                //     ));
 
-          ),
-          TextButton(onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => FitWork(),));
-          }, child: Text('Sign Out'))
+                FirebaseAuth.instance.signOut().then((value) {
+                  print("Sign Out");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SigninPage(),));
+                });
+
+              },
+              child: Text('Sign Out'))
         ],
       ),
     );
   }
 }
-
-
-
