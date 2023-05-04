@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import './loginPage.dart';
@@ -35,6 +36,7 @@ class _SigninPageState extends State<SigninPage> {
     }
     return user;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,12 +132,14 @@ class _SigninPageState extends State<SigninPage> {
                         onPressed: () async {
                           //TODO: SENDS THE USER TO THE HOME PAGE
 
+                          // var instance = FirebaseFirestore.instance.collection('users').where(field)
+
                           FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      HomePage(username: 'dfdf'),
+                                      HomePage(email: emailController.text),
                                 ),
                               );
                           }).onError((error, stackTrace) {

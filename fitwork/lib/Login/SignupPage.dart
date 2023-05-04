@@ -132,24 +132,16 @@ class _SignupPageState extends State<SignupPage> {
                               User['email'] = emailController.text;
                               User['password'] = passwordController.text;
                               // //todo: send to database
-                              // FirebaseFirestore.instance
-                              //     .collection("user")
-                              //     .add(User)
-                              //     .whenComplete(() {
-                              //   //TODO: SEND TO NEXT PAGE
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => SigninPage()),
-                              //   );
-                              // });
-
                               FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(
                                       email: emailController.text,
                                       password: passwordController.text)
                                   .then(
                                 (value) {
+                                  FirebaseFirestore.instance
+                                      .collection("user")
+                                      .add(User);
+
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -157,33 +149,21 @@ class _SignupPageState extends State<SignupPage> {
                                   );
                                 },
                               ).onError((error, stackTrace) {
+                                //
+                                if( emailController.text.contains("@") ){
+                                  flushbarError("incorrect email", context);
+
+                                }else if(passwordController.text.length < 6){
+                                  flushbarError("Password needs need to have 6 characters or more", context);
+                                }
                                 print("Error ${error.toString()}");
+                                // flushbarError("account already exist", context);
                               });
                             } else {
                               // const snackBar = SnackBar(content: Text('Please fill up all fields'));
                               // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              Flushbar(
-                                flushbarPosition: FlushbarPosition.TOP,
-                                message: "Please fill up all fields",
-
-                                icon: Icon(
-                                  Icons.info,
-                                  size: 30.0,
-                                  color: Colors.black,
-                                ),
-                                duration: Duration(seconds: 3),
-                                // leftBarIndicatorColor: Colors.green[900],
-                                // backgroundColor: Colors.black54,
-                                backgroundGradient: LinearGradient(
-                                  colors: [
-                                    Colors.red.shade500,
-                                    Colors.red.shade300,
-                                    Colors.red.shade100
-                                  ],
-                                  stops: [0.4, 0.7, 1],
-                                ),
-                              )..show(context);
-                              print("bruh");
+                              flushbarError("Fill up all fields", context);
+                              // print("bruh");
                             }
                           },
                         ),
@@ -250,6 +230,26 @@ class _SignupPageState extends State<SignupPage> {
       },
     );
   }
+}
+
+Widget flushbarError(text, context) {
+  return Flushbar(
+    flushbarPosition: FlushbarPosition.TOP,
+    message: text,
+
+    icon: Icon(
+      Icons.info,
+      size: 30.0,
+      color: Colors.black,
+    ),
+    duration: Duration(seconds: 3),
+    // leftBarIndicatorColor: Colors.green[900],
+    // backgroundColor: Colors.black54,
+    backgroundGradient: LinearGradient(
+      colors: [Colors.red.shade500, Colors.red.shade300, Colors.red.shade100],
+      stops: [0.4, 0.7, 1],
+    ),
+  )..show(context);
 }
 // ElevatedButton(
 //      onPressed: () {

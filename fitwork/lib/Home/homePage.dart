@@ -10,8 +10,8 @@ import '../Workout/WorkoutPage.dart';
 import '../Home/timerPage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.username}) : super(key: key);
-  final String username;
+  const HomePage({Key? key, required this.email}) : super(key: key);
+  final String email;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -20,13 +20,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 2;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Discover(),
-    Workout(),
-    Home(),
-    Nutrition(),
-    Profile(),
-  ];
+  // static const List<Widget> _widgetOptions = <Widget>[
+  //   Discover(),
+  //   Workout(),
+  //   Home(),
+  //   Nutrition(),
+  //   Profile(email: widget.email),
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -76,6 +76,14 @@ class _HomePageState extends State<HomePage> {
         _selectedIndex = 2;
       });
     }
+
+    List<Widget> _widgetOptions = <Widget>[
+      Discover(),
+      Workout(),
+      Home(),
+      Nutrition(),
+      Profile(email: widget.email),
+    ];
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -238,8 +246,9 @@ class _HomeState extends State<Home> {
             children: [
               Expanded(
                 child: GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TimerPage()));
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => TimerPage()));
                   },
                   child: Container(
                     height: 200,
@@ -247,8 +256,10 @@ class _HomeState extends State<Home> {
                     color: Colors.grey[400],
                     child: Align(
                         alignment: Alignment.center,
-                        child: Text('Timer',style: TextStyle(fontSize: 25),)
-                    ),
+                        child: Text(
+                          'Timer',
+                          style: TextStyle(fontSize: 25),
+                        )),
                   ),
                 ),
               ),
@@ -293,13 +304,38 @@ class _NutritionState extends State<Nutrition> {
 
 ///-------------------------------------Profile Page -------------------------------------///
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  final String email;
+
+  const Profile({Key? key, required this.email}) : super(key: key);
+
+  // final String username;
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  Map<String, dynamic> profile = {};
+
+  // final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  // bool _progressController = true;
+  //
+  // Future<void> _fetchData() async {
+  //   DocumentSnapshot documentSnapshot;
+  //   documentSnapshot =
+  //       await firestore.collection('user').doc(widget.email.toString()).get();
+  //   if (documentSnapshot.exists) {
+  //     // Map<String,dynamic> data = documentSnapshot.data() as Map<String,dynamic>;
+  //     profile = documentSnapshot.data() as Map<String, dynamic>;
+  //     print(profile['email']);
+  //   }
+  // }
+  //
+  // void initState() {
+  //   super.initState();
+  //   _fetchData();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -307,21 +343,26 @@ class _ProfileState extends State<Profile> {
       child: Column(
         children: [
           Container(),
+          Text('${profile['email']}'),
           TextButton(
-              onPressed: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => FitWork(),
-                //     ));
+            onPressed: () {
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => FitWork(),
+              //     ));
 
-                FirebaseAuth.instance.signOut().then((value) {
-                  print("Sign Out");
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SigninPage(),));
-                });
-
-              },
-              child: Text('Sign Out'))
+              FirebaseAuth.instance.signOut().then((value) {
+                print("Sign Out");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SigninPage(),
+                    ));
+              });
+            },
+            child: Text('Sign Out'),
+          ),
         ],
       ),
     );
