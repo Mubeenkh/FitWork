@@ -62,7 +62,8 @@ class _SignupPageState extends State<SignupPage> {
                             fontSize: 35, fontWeight: FontWeight.bold)),
                   ),
                   SizedBox(height: 20),
-                  LoginWidgets.loginTextField("Email", emailController),
+                  // LoginWidgets.loginTextField("Email", emailController),
+                  EmailTextField("Email", emailController, context),
                   SizedBox(height: 20),
                   LoginWidgets.loginTextField("Username", usernameController),
                   SizedBox(height: 20),
@@ -108,7 +109,7 @@ class _SignupPageState extends State<SignupPage> {
                           onPressed: () {
                             //TODO: SAVE DATA THEN SENDS THE USER TO THE SIGN UP PAGE
 
-                            // checkAccounts();
+                            checkAccounts();
                             // final snapShot = await FirebaseFirestore.instance
                             //     .collection('posts')
                             //     .doc(docId) // varuId in your case
@@ -150,12 +151,16 @@ class _SignupPageState extends State<SignupPage> {
                                 },
                               ).onError((error, stackTrace) {
                                 //
-                                if( emailController.text.contains("@") ){
-                                  flushbarError("incorrect email", context);
-
-                                }else if(passwordController.text.length < 6){
-                                  flushbarError("Password needs need to have 6 characters or more", context);
+                                if (emailController.text!.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}').hasMatch(emailController.text!)){
+                                  //r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9+$'
+                                  // print("TESTING");
+                                  flushbarError("Incorrect Email Format", context);
+                                } else if (passwordController.text.length < 6) {
+                                  flushbarError(
+                                      "Password needs need to have 6 characters or more",
+                                      context);
                                 }
+
                                 print("Error ${error.toString()}");
                                 // flushbarError("account already exist", context);
                               });
@@ -223,13 +228,45 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   )..show(context);
                 }
-                return Text('ddfd');
+                return Text('Account created');
               }).toList(),
             );
         }
       },
     );
   }
+}
+
+Widget EmailTextField(buttonText, currentController, context) {
+  return Column(
+// mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      stackedText(buttonText, 26.0, 3.0),
+      TextFormField(
+
+        controller: currentController,
+
+        decoration: InputDecoration(
+          hintText: buttonText,
+
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
+              borderRadius: BorderRadius.circular(10)),
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
+              borderRadius: BorderRadius.circular(10)),
+          errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+              borderRadius: BorderRadius.circular(10)),
+          filled: true,
+          fillColor: Color(0xffEDEDED),
+        ),
+      ),
+    ],
+  );
 }
 
 Widget flushbarError(text, context) {
@@ -251,24 +288,3 @@ Widget flushbarError(text, context) {
     ),
   )..show(context);
 }
-// ElevatedButton(
-//      onPressed: () {
-//        //TODO: Firestore create a new record code
-//
-//        Map<String, dynamic> newBook =
-//        new Map<String, dynamic>();
-//        newBook["title"] = titleController.text;
-//        newBook["author"] = authorController.text;
-//
-//        FirebaseFirestore.instance
-//            .collection("books")
-//            .add(newBook)
-//            .whenComplete(() {
-//          Navigator.of(context).pop();
-//        });
-//      },
-//      child: Text(
-//        "save",
-//        style: TextStyle(color: Colors.white),
-//      ),
-//    ),
