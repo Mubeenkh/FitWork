@@ -18,7 +18,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -110,17 +110,6 @@ class _SignupPageState extends State<SignupPage> {
                             //TODO: SAVE DATA THEN SENDS THE USER TO THE SIGN UP PAGE
 
                             checkAccounts();
-                            // final snapShot = await FirebaseFirestore.instance
-                            //     .collection('posts')
-                            //     .doc(docId) // varuId in your case
-                            //     .get();
-                            //
-                            // if (snapShot == null || !snapShot.exists) {
-                            //   // Document with id == varuId doesn't exist.
-                            //
-                            //   // You can add data to Firebase Firestore here
-                            // }
-
                             if (usernameController.text != "" &&
                                 usernameController.text != null &&
                                 emailController.text != "" &&
@@ -132,6 +121,7 @@ class _SignupPageState extends State<SignupPage> {
                               User['username'] = usernameController.text;
                               User['email'] = emailController.text;
                               User['password'] = passwordController.text;
+                              User['type'] = 'user';
                               // //todo: send to database
                               FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(
@@ -139,9 +129,13 @@ class _SignupPageState extends State<SignupPage> {
                                       password: passwordController.text)
                                   .then(
                                 (value) {
+                                  // FirebaseFirestore.instance
+                                  //     .collection("user")
+                                  //     .add(User);
                                   FirebaseFirestore.instance
                                       .collection("user")
-                                      .add(User);
+                                      .doc(User['email'])
+                                      .set(User);
 
                                   Navigator.push(
                                     context,

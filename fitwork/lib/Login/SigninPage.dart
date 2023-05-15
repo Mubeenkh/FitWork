@@ -19,23 +19,24 @@ class _SigninPageState extends State<SigninPage> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
 
-  static Future<User?> loginUsingEmailPassword(
-      {required String email,
-      required String password,
-      required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-    try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      user = userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "user-not-found") {
-        print("No user found for that email");
-      }
-    }
-    return user;
-  }
+  // static Future<User?> loginUsingEmailPassword(
+  //     {required String email,
+  //     required String password,
+  //     required BuildContext context}) async {
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   User? user;
+  //   try {
+  //     UserCredential userCredential = await auth.signInWithEmailAndPassword(
+  //         email: email, password: password);
+  //     user = userCredential.user;
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == "user-not-found") {
+  //       print("No user found for that email");
+  //     }
+  //   }
+  //   return user;
+  // }
+
 
 
   @override
@@ -216,36 +217,6 @@ class _SigninPageState extends State<SigninPage> {
 }
 
 /////////////////////
-
-// Widget signInTextField(buttonText) {
-//   return Column(
-//     // mainAxisAlignment: MainAxisAlignment.start,
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       stackedText(buttonText, 26.0, 4.0),
-//       TextField(
-//         decoration: InputDecoration(
-//           hintText: buttonText,
-//           labelText: buttonText,
-//           // labelStyle: ,
-//           enabledBorder: OutlineInputBorder(
-//               borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
-//               borderRadius: BorderRadius.circular(10)),
-//           border: OutlineInputBorder(),
-//           focusedBorder: OutlineInputBorder(
-//               borderSide: BorderSide(width: 4, color: Color(0xff058A3A)),
-//               borderRadius: BorderRadius.circular(10)),
-//           errorBorder: OutlineInputBorder(
-//               borderSide: BorderSide(
-//                   width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-//               borderRadius: BorderRadius.circular(10)),
-//           filled: true,
-//           fillColor: Color(0xffEDEDED),
-//         ),
-//       ),
-//     ],
-//   );
-// }
 
 Widget stackedText(String text, double textSize, double borderSize) {
   return Stack(

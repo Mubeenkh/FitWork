@@ -18,15 +18,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 2;
 
-  // static const List<Widget> _widgetOptions = <Widget>[
-  //   Discover(),
-  //   Workout(),
-  //   Home(),
-  //   Nutrition(),
-  //   Profile(email: widget.email),
-  // ];
+  Map<String, dynamic> User = new Map<String, dynamic>();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Future<void> _fetchData() async {
+    DocumentSnapshot documentSnapshot;
+    documentSnapshot = await firestore.collection('user').doc(widget.email).get();
+
+    if(documentSnapshot.exists){
+      Map<String,dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+      setState(() {
+        User = data;
+      });
+    }
+  }
+
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+  //---------------------------------------------
+  int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -36,40 +48,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _logoutDialog(BuildContext context) {
-      return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('W'),
-            content: const Text('A dialog is a type of modal window that\n'
-                'appears in front of app content to\n'
-                'provide critical information, or prompt\n'
-                'for a decision to be made.'),
-            actions: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
-                child: const Text('Disable'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
-                child: const Text('Enable'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
 
     void _sendHome() {
       setState(() {
@@ -78,11 +56,11 @@ class _HomePageState extends State<HomePage> {
     }
 
     List<Widget> _widgetOptions = <Widget>[
-      Discover(),
+      Discover( email: widget.email,),
       Workout(),
       Home(),
       Nutrition(),
-      Profile(email: widget.email),
+      Profile(userInfo: User),
     ];
 
     return MaterialApp(
@@ -115,9 +93,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        body: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
+        body:
+        // Column(
+        //   children: [
+        //     ElevatedButton(
+        //         onPressed: () {
+        //           print(User.length);
+        //         },
+        //         child: Text(User['username'].toString())),
+            _widgetOptions.elementAt(_selectedIndex),
+        //   ],
+        // ),
         bottomNavigationBar: BottomNavigationBar(
           // backgroundColor: Colors.blueGrey,
           items: const <BottomNavigationBarItem>[
@@ -186,70 +172,30 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Image.asset(name)
-          Container(
-            height: 100,
-            width: double.infinity,
-            color: Colors.grey[400],
-            child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Workout picture from api',
-                  style: TextStyle(fontSize: 25),
-                )),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 200,
-                  width: 100,
-                  color: Colors.grey[400],
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Last Workout: Date',
-                        style: TextStyle(fontSize: 25),
-                      )),
-                ),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: Container(
-                  height: 200,
-                  width: 100,
-                  color: Colors.grey[400],
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Motivational quote from api',
-                        style: TextStyle(fontSize: 25),
-                      )),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => TimerPage()));
-                  },
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Image.asset(name)
+            Container(
+              height: 100,
+              width: double.infinity,
+              color: Colors.grey[400],
+              child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Workout picture from api',
+                    style: TextStyle(fontSize: 25),
+                  )),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                Expanded(
                   child: Container(
                     height: 200,
                     width: 100,
@@ -257,31 +203,73 @@ class _HomeState extends State<Home> {
                     child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Timer',
+                          'Last Workout: Date',
                           style: TextStyle(fontSize: 25),
                         )),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: Container(
-                  height: 200,
-                  width: 100,
-                  color: Colors.grey[400],
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Picture of sad dog',
-                        style: TextStyle(fontSize: 25),
-                      )),
+                SizedBox(
+                  width: 20,
                 ),
-              ),
-            ],
-          )
-        ],
+                Expanded(
+                  child: Container(
+                    height: 200,
+                    width: 100,
+                    color: Colors.grey[400],
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Motivational quote from api',
+                          style: TextStyle(fontSize: 25),
+                        )),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => TimerPage()));
+                    },
+                    child: Container(
+                      height: 200,
+                      width: 100,
+                      color: Colors.grey[400],
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Timer',
+                            style: TextStyle(fontSize: 25),
+                          )),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Container(
+                    height: 200,
+                    width: 100,
+                    color: Colors.grey[400],
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Picture of sad dog',
+                          style: TextStyle(fontSize: 25),
+                        )),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -304,37 +292,15 @@ class _NutritionState extends State<Nutrition> {
 
 ///-------------------------------------Profile Page -------------------------------------///
 class Profile extends StatefulWidget {
-  final String email;
 
-  const Profile({Key? key, required this.email}) : super(key: key);
-
-  // final String username;
+  const Profile({Key? key, required this.userInfo}) : super(key: key);
+  final Map<String, dynamic> userInfo;
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-  Map<String, dynamic> profile = {};
-
-  // final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  // bool _progressController = true;
-  //
-  // Future<void> _fetchData() async {
-  //   DocumentSnapshot documentSnapshot;
-  //   documentSnapshot =
-  //       await firestore.collection('user').doc(widget.email.toString()).get();
-  //   if (documentSnapshot.exists) {
-  //     // Map<String,dynamic> data = documentSnapshot.data() as Map<String,dynamic>;
-  //     profile = documentSnapshot.data() as Map<String, dynamic>;
-  //     print(profile['email']);
-  //   }
-  // }
-  //
-  // void initState() {
-  //   super.initState();
-  //   _fetchData();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -343,15 +309,10 @@ class _ProfileState extends State<Profile> {
       child: Column(
         children: [
           Container(),
-          Text('${profile['email']}'),
+          Text(widget.userInfo['email'].toString()),
+          Text(widget.userInfo['username'].toString()),
           TextButton(
             onPressed: () {
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => FitWork(),
-              //     ));
-
               FirebaseAuth.instance.signOut().then((value) {
                 print("Sign Out");
                 Navigator.push(

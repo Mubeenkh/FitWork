@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../Home/homePage.dart';
 
 class DiscoverWorkout extends StatefulWidget {
-  const DiscoverWorkout({Key? key}) : super(key: key);
-
+  const DiscoverWorkout({Key? key, required this.name}) : super(key: key);
+  final String name;
   @override
   State<DiscoverWorkout> createState() => _DiscoverWorkoutState();
 }
@@ -84,7 +84,7 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Back'),
+                  child: Text('Add Workout'),
                 ),
                 Text(
                   'Triceps Workout',
@@ -95,11 +95,11 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                   // height: double.infinity,
                   child: ListView(
                     children: [
-                      cardContent('Bench Dips'),
-                      cardContent('Bench Dips'),
-                      cardContent('Bench Dips'),
-                      cardContent('Bench Dips'),
-                      cardContent('Bench Dips'),
+                      cardContent(widget.name),
+                      // cardContent('Bench Dips'),
+                      // cardContent('Bench Dips'),
+                      // cardContent('Bench Dips'),
+                      // cardContent('Bench Dips'),
                     ],
                   ),
                 )
