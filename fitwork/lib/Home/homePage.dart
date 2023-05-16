@@ -7,6 +7,9 @@ import '../Login/loginPage.dart';
 import '../Discover/discoverPage.dart';
 import '../Workout/WorkoutPage.dart';
 import '../Home/timerPage.dart';
+import '../Models/Quote.dart';
+import '../Services/quote_service.dart';
+import 'dart:math';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.email}) : super(key: key);
@@ -17,15 +20,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   Map<String, dynamic> User = new Map<String, dynamic>();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   Future<void> _fetchData() async {
     DocumentSnapshot documentSnapshot;
-    documentSnapshot = await firestore.collection('user').doc(widget.email).get();
+    documentSnapshot =
+    await firestore.collection('user').doc(widget.email).get();
 
-    if(documentSnapshot.exists){
-      Map<String,dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> data =
+      documentSnapshot.data() as Map<String, dynamic>;
       setState(() {
         User = data;
       });
@@ -36,6 +41,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _fetchData();
   }
+
   //---------------------------------------------
   int _selectedIndex = 2;
 
@@ -47,7 +53,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     void _sendHome() {
       setState(() {
         _selectedIndex = 2;
@@ -55,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     List<Widget> _widgetOptions = <Widget>[
-      Discover( userInfo: User),
+      Discover(userInfo: User),
       Workout(),
       Home(),
       Nutrition(),
@@ -80,15 +85,15 @@ class _HomePageState extends State<HomePage> {
             flexibleSpace: Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color(0xff1F3040),
-                  Color(0xff3C6B62),
-                  Color(0xff5FB28B),
-                  Color(0xff5FB28B),
-                ],
-              )),
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Color(0xff1F3040),
+                      Color(0xff3C6B62),
+                      Color(0xff5FB28B),
+                      Color(0xff5FB28B),
+                    ],
+                  )),
             ),
           ),
         ),
@@ -100,19 +105,17 @@ class _HomePageState extends State<HomePage> {
         //           print(User.length);
         //         },
         //         child: Text(User['username'].toString())),
-            _widgetOptions.elementAt(_selectedIndex),
+        _widgetOptions.elementAt(_selectedIndex),
         //   ],
         // ),
         bottomNavigationBar: BottomNavigationBar(
           // backgroundColor: Colors.blueGrey,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon:
-                Icon(
-                  Icons.arrow_circle_up,
-                  size: 50,
-                ),
-
+              icon: Icon(
+                Icons.arrow_circle_up,
+                size: 50,
+              ),
               label: 'Discover',
               backgroundColor: Color(0xff3C6B62),
             ),
@@ -214,11 +217,7 @@ class _HomeState extends State<Home> {
                     width: 100,
                     color: Colors.grey[400],
                     child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Motivational quote from api',
-                          style: TextStyle(fontSize: 25),
-                        )),
+                        alignment: Alignment.center, child: quoteWidget()),
                   ),
                 ),
               ],
@@ -272,6 +271,70 @@ class _HomeState extends State<Home> {
   }
 }
 
+///------------------------------------- Quote Widget -------------------------------------///
+
+class quoteWidget extends StatefulWidget {
+  const quoteWidget({Key? key}) : super(key: key);
+
+  @override
+  State<quoteWidget> createState() => _quoteWidgetState();
+}
+
+class _quoteWidgetState extends State<quoteWidget> {
+  List<Quote>? quotes;
+  var isLoaded = false;
+  Random rand = new Random();
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
+  }
+
+  getData() async {
+    quotes = await QuoteService().getQuotes();
+    if (quotes != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var index = rand.nextInt(200);
+    return Visibility(
+      visible: isLoaded,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+        child: Container(
+          child: Column(
+            children: [
+              Expanded(
+                  child: Text(
+                    "\"${quotes?[index].text ?? ""}\"",
+                    style: TextStyle(fontSize: 20),
+                  )
+              ),
+              Text(
+                "- ${quotes?[index].author ?? "unknown"}",
+                style: TextStyle(
+                  fontSize: 20
+                ),
+              )
+            ],
+          ),
+        )
+      ),
+      replacement: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
 ///-------------------------------------Nutrition Page -------------------------------------///
 class Nutrition extends StatefulWidget {
   const Nutrition({Key? key}) : super(key: key);
@@ -289,7 +352,6 @@ class _NutritionState extends State<Nutrition> {
 
 ///-------------------------------------Profile Page -------------------------------------///
 class Profile extends StatefulWidget {
-
   const Profile({Key? key, required this.userInfo}) : super(key: key);
   final Map<String, dynamic> userInfo;
 
@@ -298,7 +360,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   @override
   Widget build(BuildContext context) {
     return Padding(
