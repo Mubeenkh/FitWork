@@ -105,7 +105,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 );
-              });
+              }
+            );
         },
         tooltip: 'Add Title',
         child: Icon(Icons.add),

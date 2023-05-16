@@ -311,6 +311,7 @@ class _ProfileState extends State<Profile> {
           Container(),
           Text(widget.userInfo['email'].toString()),
           Text(widget.userInfo['username'].toString()),
+          Text(widget.userInfo['type'].toString()),
           TextButton(
             onPressed: () {
               FirebaseAuth.instance.signOut().then((value) {
