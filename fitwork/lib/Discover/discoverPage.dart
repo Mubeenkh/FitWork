@@ -1,4 +1,5 @@
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import './discoverWorkout.dart';
@@ -22,7 +23,67 @@ class _DiscoverState extends State<Discover> {
   TextEditingController updateNameWorkoutController = new TextEditingController();
   TextEditingController updateImageWorkoutController = new TextEditingController();
 
+  //for the edit option
   bool _isShow = false;
+
+  //Deleting a Workout
+  Future<Widget> _isCollectionExits(clickedName) async {
+    //Checking if the Exercise collection is empty before deleting it
+    QuerySnapshot<Map<String, dynamic>> _exercisesCollection =
+    await FirebaseFirestore.instance.collection('workout').doc(clickedName).collection('exercises').get();
+
+    if (_exercisesCollection.docs.isNotEmpty) {
+      print('is not empty');
+
+      return Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        message: "Cannot delete",
+
+        icon: Icon(
+          Icons.info,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        // leftBarIndicatorColor: Colors.green[900],
+        // backgroundColor: Colors.black54,
+        backgroundGradient: LinearGradient(
+          colors: [
+            Colors.red.shade500,
+            Colors.red.shade300,
+            Colors.red.shade100
+          ],
+          stops: [0.4, 0.7, 1],
+        ),
+      )..show(context);
+      // return true;
+    } else {
+      print('is empty');
+      return Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        message: "Can delete",
+
+        icon: Icon(
+          Icons.info,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        // leftBarIndicatorColor: Colors.green[900],
+        // backgroundColor: Colors.black54,
+        backgroundGradient: LinearGradient(
+          colors: [
+            Colors.green.shade500,
+            Colors.green.shade300,
+            Colors.green.shade100
+          ],
+          stops: [0.4, 0.7, 1],
+        ),
+      )..show(context);
+      // FirebaseFirestore.instance.collection('workout').doc(clickedName).collection('exercises').doc().delete();
+      // return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,140 +135,278 @@ class _DiscoverState extends State<Discover> {
                                         builder: (context, setState) {
                                       return AlertDialog(
                                         backgroundColor: Color(0xffbad9c1),
-                                        content: Visibility(
-                                          visible: _isShow,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(top: 10),
-                                                child: Text(
-                                                  "Name: ",
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                              ),
-                                              TextField(
-                                                controller:
-                                                    updateNameWorkoutController,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(top: 20),
-                                                child: Text("Image: "),
-                                              ),
-                                              TextField(
-                                                controller:
-                                                  updateImageWorkoutController,
-                                              ),
-                                              ElevatedButton(
-                                                  onPressed: () {
-                                                    //  Firebase
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Align(
 
-                                                    Map<String, dynamic> updateWorkout = new Map<String, dynamic>();
-                                                    updateWorkout['name'] = updateNameWorkoutController.text;
-                                                    updateWorkout['image'] = updateImageWorkoutController.text;
-
-                                                    // Updae Firestore record information regular way
-                                                    FirebaseFirestore.instance
-                                                        .collection("workout")
-                                                        .doc(updateWorkout['name'])
-                                                        .update(updateWorkout)
-                                                        .whenComplete(() {
-                                                        Navigator.pop(context);
-                                                        updateNameWorkoutController.clear();
-                                                        updateImageWorkoutController.clear();
-                                                        setState(
-                                                              () {
-                                                            _isShow = false;
-                                                          },
-                                                        );
-                                                    });
-
-
-                                                  },
-                                                  child: Text('Save Change'))
-                                            ],
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: ElevatedButton(
-                                                      // color: Colors.red,
-                                                      onPressed: () {
-                                                        setState(
-                                                          () {
-                                                            _isShow = false;
-                                                          },
-                                                        );
-                                                        Navigator.of(context).pop();
-                                                        updateNameWorkoutController.clear();
-                                                        updateImageWorkoutController.clear();
-                                                      },
-                                                      child: Text(
-                                                        'Back',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Expanded(
-                                                    child: ElevatedButton(
-                                                      // color: Colors.red,
-                                                      onPressed: () {
-                                                        updateNameWorkoutController.text = snap[index]['name'];
-                                                        updateImageWorkoutController.text = snap[index]['image'];
-                                                        setState(
-                                                          () {
-                                                            _isShow = !_isShow;
-                                                          },
-                                                        );
-                                                        // Navigator.of(context).pop();
-                                                      },
-                                                      child: Text(
-                                                        _isShow
-                                                            ? 'Hide Edit'
-                                                            : 'Show Edit',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              ElevatedButton(
+                                              alignment: Alignment.topLeft,
+                                              child: ElevatedButton(
+                                                style: _buttonStyle(),
                                                 onPressed: () {
-                                                  //TODO: Firestore create a new record code
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              DiscoverWorkout(
-                                                                  name: snap[
-                                                                          index]
-                                                                      ['name'],
-                                                                  userInfo: widget
-                                                                      .userInfo)));
+                                                  setState(
+                                                        () {
+                                                      _isShow = false;
+                                                    },
+                                                  );
+                                                  Navigator.of(context).pop();
+                                                  updateNameWorkoutController.clear();
+                                                  updateImageWorkoutController.clear();
                                                 },
                                                 child: Text(
-                                                  "View Exerciese",
+                                                  'Back',
                                                   style: TextStyle(
-                                                      color: Colors.white),
+                                                      color:
+                                                      Colors.white),
                                                 ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            Visibility(
+                                              visible: _isShow,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 10),
+                                                    child: Text(
+                                                      "Name: ",
+                                                      textAlign: TextAlign.start,
+                                                    ),
+                                                  ),
+                                                  TextField(
+                                                    controller:
+                                                        updateNameWorkoutController,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 20),
+                                                    child: Text("Image: "),
+                                                  ),
+                                                  TextField(
+                                                    controller:
+                                                      updateImageWorkoutController,
+                                                  ),
+                                                  ElevatedButton(
+                                                      onPressed: () {
+                                                        //  Firebase
+
+                                                        Map<String, dynamic> updateWorkout = new Map<String, dynamic>();
+                                                        updateWorkout['name'] = updateNameWorkoutController.text;
+                                                        updateWorkout['image'] = updateImageWorkoutController.text;
+
+                                                        // Update Firestore record information regular way
+                                                        FirebaseFirestore.instance
+                                                            .collection("workout")
+                                                            .doc(updateWorkout['name'])
+                                                            .update(updateWorkout)
+                                                            .whenComplete(() {
+                                                            Navigator.pop(context);
+                                                            updateNameWorkoutController.clear();
+                                                            updateImageWorkoutController.clear();
+                                                            setState(
+                                                                  () {
+                                                                _isShow = false;
+                                                              },
+                                                            );
+                                                        });
+
+
+                                                      },
+                                                      child: Text('Save Change'))
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
+                                              children: [
+
+                                                Expanded(
+                                                  child: ElevatedButton(
+                                                    // color: Colors.red,
+                                                    onPressed: () {
+                                                      updateNameWorkoutController.text = snap[index]['name'];
+                                                      updateImageWorkoutController.text = snap[index]['image'];
+                                                      setState(
+                                                            () {
+                                                          _isShow = !_isShow;
+                                                        },
+                                                      );
+                                                      // Navigator.of(context).pop();
+                                                    },
+                                                    child: Text(
+                                                      _isShow
+                                                          ? 'Hide Edit'
+                                                          : 'Show Edit',
+                                                      style: TextStyle(
+                                                          color:
+                                                          Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  child: ElevatedButton(
+                                                    // color: Colors.red,
+                                                    onPressed: () {
+                                                      // QuerySnapshot<Map<String, dynamic>> _query =
+                                                      //     await FirebaseFirestore.instance.collection('workout').get();
+                                                      // if(){
+                                                      //
+                                                      // }
+                                                      _isCollectionExits(snap[index]['name']);
+                                                    },
+                                                    child: Text(
+                                                      'Delete',
+                                                      style: TextStyle(
+                                                          color:
+                                                          Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
+                                            ElevatedButton(
+                                              style: _buttonStyle(),
+                                              onPressed: () {
+                                                //TODO: Firestore create a new record code
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            DiscoverWorkout(
+                                                                name: snap[
+                                                                index]
+                                                                ['name'],
+                                                                userInfo: widget
+                                                                    .userInfo)));
+                                              },
+                                              child: Text(
+                                                "View Exerciese",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            // TextButton(
+                                            //   // color: Colors.red,
+                                            //   onPressed: () {
+                                            //     setState(
+                                            //           () {
+                                            //         _isShow = false;
+                                            //       },
+                                            //     );
+                                            //     Navigator.of(context).pop();
+                                            //     updateNameWorkoutController.clear();
+                                            //     updateImageWorkoutController.clear();
+                                            //   },
+                                            //   child: Text(
+                                            //     'Back',
+                                            //     style: TextStyle(
+                                            //         color:
+                                            //         Colors.white),
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                        // actions: <Widget>[
+                                        //   Column(
+                                        //     children: [
+                                        //       Row(
+                                        //         children: [
+                                        //
+                                        //           Expanded(
+                                        //             child: ElevatedButton(
+                                        //               // color: Colors.red,
+                                        //               onPressed: () {
+                                        //                 updateNameWorkoutController.text = snap[index]['name'];
+                                        //                 updateImageWorkoutController.text = snap[index]['image'];
+                                        //                 setState(
+                                        //                   () {
+                                        //                     _isShow = !_isShow;
+                                        //                   },
+                                        //                 );
+                                        //                 // Navigator.of(context).pop();
+                                        //               },
+                                        //               child: Text(
+                                        //                 _isShow
+                                        //                     ? 'Hide Edit'
+                                        //                     : 'Show Edit',
+                                        //                 style: TextStyle(
+                                        //                     color:
+                                        //                         Colors.white),
+                                        //               ),
+                                        //             ),
+                                        //           ),
+                                        //           SizedBox(
+                                        //             width: 10,
+                                        //           ),
+                                        //           Expanded(
+                                        //             child: ElevatedButton(
+                                        //               // color: Colors.red,
+                                        //               onPressed: () {
+                                        //                 // QuerySnapshot<Map<String, dynamic>> _query =
+                                        //                 //     await FirebaseFirestore.instance.collection('workout').get();
+                                        //                 // if(){
+                                        //                 //
+                                        //                 // }
+                                        //                 _isCollectionExits(snap[index]['name']);
+                                        //               },
+                                        //               child: Text(
+                                        //                 'Delete',
+                                        //                 style: TextStyle(
+                                        //                     color:
+                                        //                     Colors.white),
+                                        //               ),
+                                        //             ),
+                                        //           ),
+                                        //
+                                        //         ],
+                                        //       ),
+                                        //       ElevatedButton(
+                                        //         onPressed: () {
+                                        //           //TODO: Firestore create a new record code
+                                        //           Navigator.push(
+                                        //               context,
+                                        //               MaterialPageRoute(
+                                        //                   builder: (context) =>
+                                        //                       DiscoverWorkout(
+                                        //                           name: snap[
+                                        //                                   index]
+                                        //                               ['name'],
+                                        //                           userInfo: widget
+                                        //                               .userInfo)));
+                                        //         },
+                                        //         child: Text(
+                                        //           "View Exerciese",
+                                        //           style: TextStyle(
+                                        //               color: Colors.white),
+                                        //         ),
+                                        //       ),
+                                        //       TextButton(
+                                        //         // color: Colors.red,
+                                        //         onPressed: () {
+                                        //           setState(
+                                        //                 () {
+                                        //               _isShow = false;
+                                        //             },
+                                        //           );
+                                        //           Navigator.of(context).pop();
+                                        //           updateNameWorkoutController.clear();
+                                        //           updateImageWorkoutController.clear();
+                                        //         },
+                                        //         child: Text(
+                                        //           'Back',
+                                        //           style: TextStyle(
+                                        //               color:
+                                        //               Colors.white),
+                                        //         ),
+                                        //       ),
+                                        //     ],
+                                        //   ),
 
                                           // ElevatedButton(
                                           //   // color: Colors.red,
@@ -251,7 +450,7 @@ class _DiscoverState extends State<Discover> {
                                           //     style: TextStyle(color: Colors.white),
                                           //   ),
                                           // ),
-                                        ],
+                                        // ],
                                       );
                                     });
                                   },
@@ -315,19 +514,7 @@ class _DiscoverState extends State<Discover> {
   _showAdminButton() {
     if (widget.userInfo['type'] == "admin") {
       return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          shadowColor: Colors.black,
-          elevation: 20,
-          backgroundColor: Color(0xff5FB28B),
-          side: BorderSide(
-            width: 3,
-            color: Color(0xff3C615A),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          // onPrimary: Color(0xff1F3040),
-        ),
+        style: _buttonStyle(),
         onPressed: () {
           showDialog(
             context: context,
@@ -361,17 +548,19 @@ class _DiscoverState extends State<Discover> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: ElevatedButton(
+                      style: _buttonStyle(),
                       // color: Colors.red,
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       child: Text(
-                        "Undo",
+                        "Back",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
                   ElevatedButton(
+                    style: _buttonStyle(),
                     onPressed: () {
                       //TODO: Firestore create a new record code
 
@@ -406,5 +595,21 @@ class _DiscoverState extends State<Discover> {
         style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
       );
     }
+  }
+
+  _buttonStyle() {
+    return  ElevatedButton.styleFrom(
+      shadowColor: Colors.black,
+      elevation: 20,
+      backgroundColor: Color(0xff5FB28B),
+      side: BorderSide(
+      width: 3,
+      color: Color(0xff3C615A),
+      ),
+      shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+      ),
+      // onPrimary: Color(0xff1F3040),
+    );
   }
 }
