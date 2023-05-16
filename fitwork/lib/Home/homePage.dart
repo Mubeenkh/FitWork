@@ -26,11 +26,11 @@ class _HomePageState extends State<HomePage> {
   Future<void> _fetchData() async {
     DocumentSnapshot documentSnapshot;
     documentSnapshot =
-    await firestore.collection('user').doc(widget.email).get();
+        await firestore.collection('user').doc(widget.email).get();
 
     if (documentSnapshot.exists) {
       Map<String, dynamic> data =
-      documentSnapshot.data() as Map<String, dynamic>;
+          documentSnapshot.data() as Map<String, dynamic>;
       setState(() {
         User = data;
       });
@@ -85,27 +85,27 @@ class _HomePageState extends State<HomePage> {
             flexibleSpace: Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Color(0xff1F3040),
-                      Color(0xff3C6B62),
-                      Color(0xff5FB28B),
-                      Color(0xff5FB28B),
-                    ],
-                  )),
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color(0xff1F3040),
+                  Color(0xff3C6B62),
+                  Color(0xff5FB28B),
+                  Color(0xff5FB28B),
+                ],
+              )),
             ),
           ),
         ),
         body:
-        // Column(
-        //   children: [
-        //     ElevatedButton(
-        //         onPressed: () {
-        //           print(User.length);
-        //         },
-        //         child: Text(User['username'].toString())),
-        _widgetOptions.elementAt(_selectedIndex),
+            // Column(
+            //   children: [
+            //     ElevatedButton(
+            //         onPressed: () {
+            //           print(User.length);
+            //         },
+            //         child: Text(User['username'].toString())),
+            _widgetOptions.elementAt(_selectedIndex),
         //   ],
         // ),
         bottomNavigationBar: BottomNavigationBar(
@@ -256,10 +256,15 @@ class _HomeState extends State<Home> {
                     color: Colors.grey[400],
                     child: Align(
                         alignment: Alignment.center,
-                        child: Text(
-                          'Picture of sad dog',
-                          style: TextStyle(fontSize: 25),
-                        )),
+                    ),
+                    foregroundDecoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          "https://transcode-v2.app.engoo.com/image/fetch/f_auto,c_lfill,w_300,dpr_3/https://assets.app.engoo.com/images/QyDHB4YHkK2V6TA6QkDzSIMbQpg9IIUKO5tn8KuDcJ1.jpeg",
+                        ),
+                        fit: BoxFit.cover
+                      )
+                    ),
                   ),
                 ),
               ],
@@ -285,7 +290,6 @@ class _quoteWidgetState extends State<quoteWidget> {
   var isLoaded = false;
   Random rand = new Random();
 
-
   @override
   void initState() {
     super.initState();
@@ -308,26 +312,22 @@ class _quoteWidgetState extends State<quoteWidget> {
     return Visibility(
       visible: isLoaded,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-        child: Container(
-          child: Column(
-            children: [
-              Expanded(
-                  child: Text(
-                    "\"${quotes?[index].text ?? ""}\"",
-                    style: TextStyle(fontSize: 20),
-                  )
-              ),
-              Text(
-                "- ${quotes?[index].author ?? "unknown"}",
-                style: TextStyle(
-                  fontSize: 20
-                ),
-              )
-            ],
-          ),
-        )
-      ),
+          padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+          child: Container(
+            child: Column(
+              children: [
+                Expanded(
+                    child: Text(
+                  "\"${quotes?[index].text ?? ""}\"",
+                  style: TextStyle(fontSize: 20),
+                )),
+                Text(
+                  "- ${quotes?[index].author ?? "unknown"}",
+                  style: TextStyle(fontSize: 20),
+                )
+              ],
+            ),
+          )),
       replacement: Center(
         child: CircularProgressIndicator(),
       ),
