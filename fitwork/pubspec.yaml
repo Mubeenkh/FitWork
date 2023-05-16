@@ -80,6 +80,12 @@ flutter:
     - assets/images/logoWithBack.png
     - assets/images/sampleWorkout.png
     - assets/images/Workout/chest.jpg
+    - assets/images/Workout/Back.png
+    - assets/images/Workout/Biceps.png
+    - assets/images/Workout/Deltroid.jpg
+    - assets/images/Workout/leg.jpg
+    - assets/images/Workout/triceps.jpg
+    -
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
