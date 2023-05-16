@@ -116,6 +116,7 @@ class _SignupPageState extends State<SignupPage> {
                                 emailController.text != null &&
                                 passwordController.text != "" &&
                                 passwordController.text != null) {
+
                               Map<String, dynamic> User =
                                   new Map<String, dynamic>();
                               User['username'] = usernameController.text;

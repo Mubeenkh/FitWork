@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     List<Widget> _widgetOptions = <Widget>[
-      Discover( email: widget.email,),
+      Discover( userInfo: User),
       Workout(),
       Home(),
       Nutrition(),

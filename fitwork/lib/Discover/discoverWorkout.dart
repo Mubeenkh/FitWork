@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import '../Home/homePage.dart';
 
 class DiscoverWorkout extends StatefulWidget {
-  const DiscoverWorkout({Key? key, required this.name}) : super(key: key);
+  const DiscoverWorkout({Key? key, required this.name, required this.userInfo}) : super(key: key);
   final String name;
-
+  final Map<String,dynamic> userInfo;
   @override
   State<DiscoverWorkout> createState() => _DiscoverWorkoutState();
 }
@@ -16,76 +16,90 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
   // TextEditingController nameController = new TextEditingController();
   // TextEditingController imageController = new TextEditingController();
 
-  Map<String, dynamic> Exercises = {};
 
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController imageController = new TextEditingController();
 
-  Future<void> _fetchData() async {
-    DocumentSnapshot documentSnapshot;
-    documentSnapshot =
-        await firestore.collection("exercises").doc(widget.name).get();
-    if (documentSnapshot.exists) {
-      Map<String, dynamic> data =
-          documentSnapshot.data() as Map<String, dynamic>;
-      setState(() {
-        Exercises = data;
-      });
-    }
-  }
+  late  DocumentReference _documentReference = FirebaseFirestore.instance.collection('workout').doc(widget.name);
 
-  List<Widget> list = [];
-  Future<void> _fetchMoreData() async {
-    Exercises.forEach(
-          (key, value) {
-        print(key);
-        print(value['stringExample']);
-        // list.add(new Text(key));
-        // list.add(new Text(value['stringExample']));
-        setState(() {
-          list.add(
-            new Card(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.black54),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: Container(
-                padding: EdgeInsets.all(8),
-                // padding: EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xff3C6B62),
-                      Color(0xff1B2826),
-                    ],
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      key,
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    Image.asset('assets/images/sampleWorkout.png')
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-      },
-    );
-  }
+  late CollectionReference _referenceExercises =  _documentReference.collection('exercises');
+  late Stream<QuerySnapshot> _streamExercises = _referenceExercises.snapshots();
 
-  void initState() {
-    super.initState();
-    _fetchData();
-    _fetchMoreData();
-  }
+  //--------------
+
+
+
+
+  // Map<String, dynamic> Exercises = {};
+
+  // final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // Future<void> _fetchData() async {
+  //   DocumentSnapshot documentSnapshot;
+  //   documentSnapshot =
+  //       await firestore.collection("exercises").doc(widget.name).get();
+  //   if (documentSnapshot.exists) {
+  //     Map<String, dynamic> data =
+  //         documentSnapshot.data() as Map<String, dynamic>;
+  //     setState(() {
+  //       Exercises = data;
+  //     });
+  //   }
+  // }
+
+  // List<Widget> list = [];
+  // Future<void> _fetchMoreData() async {
+  //   Exercises.forEach(
+  //         (key, value) {
+  //       print(key);
+  //       print(value['stringExample']);
+  //       // list.add(new Text(key));
+  //       // list.add(new Text(value['stringExample']));
+  //       setState(() {
+  //         list.add(
+  //           new Card(
+  //             shape: RoundedRectangleBorder(
+  //               side: BorderSide(color: Colors.black54),
+  //               borderRadius: BorderRadius.circular(20.0),
+  //             ),
+  //             child: Container(
+  //               padding: EdgeInsets.all(8),
+  //               // padding: EdgeInsets.all(20.0),
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(20.0),
+  //                 gradient: LinearGradient(
+  //                   colors: [
+  //                     Color(0xff3C6B62),
+  //                     Color(0xff1B2826),
+  //                   ],
+  //                 ),
+  //               ),
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Text(
+  //                     key,
+  //                     style: TextStyle(
+  //                         fontSize: 30,
+  //                         fontWeight: FontWeight.bold,
+  //                         color: Colors.white),
+  //                   ),
+  //                   Image.asset('assets/images/sampleWorkout.png')
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       });
+  //     },
+  //   );
+  // }
+
+  // void initState() {
+  //   super.initState();
+  //   _fetchData();
+  //   _fetchMoreData();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -144,179 +158,99 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
         body: Container(
           // height: double.infinity,
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xff1F3040),
-                Color(0xff3C6B62),
-                Color(0xff5FB28B),
-                Color(0xff5FB28B),
-              ],
-            ),
+            // gradient: LinearGradient(
+            //   colors: [
+            //     Color(0xff1F3040),
+            //     Color(0xff3C6B62),
+            //     Color(0xff5FB28B),
+            //     Color(0xff5FB28B),
+            //   ],
+            // ),
+            color: Color(0xffbad9c1),
           ),
           child: Center(
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Add Workout"),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    "Name: ",
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                TextField(
-                                    // controller: nameController,
-                                    ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 20),
-                                  child: Text("Image: "),
-                                ),
-                                TextField(
-                                    // controller: imageController,
-                                    ),
-                              ],
-                            ),
-                            actions: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: ElevatedButton(
-                                  // color: Colors.red,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    "Undo",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-
-                              //Add Button
-
-                              ElevatedButton(
-                                onPressed: () {
-                                  //TODO: Firestore create a new record code
-                                  Map<String, dynamic> newBook =
-                                      new Map<String, dynamic>();
-                                  Map<String, dynamic> example = {
-                                    "sad": {
-                                      "stringExample": "ds world!",
-                                      "numberExample": 3.565,
-                                    },
-                                  };
-
-                                  FirebaseFirestore.instance
-                                      .collection("exercises")
-                                      .doc(widget.name)
-                                      .update(example)
-                                      .whenComplete(() {
-                                    Navigator.of(context).pop();
-                                  });
-
-                                  // Map<String, dynamic> addExercise = {};
-                                  // addExercise['name'] = nameController.text;
-                                  // addExercise['image'] = imageController.text;
-                                  // FirebaseFirestore.instance
-                                  //     .collection(widget.name)
-                                  //     .doc(addExercise['name'])
-                                  //     .set(addExercise);
-                                },
-                                child: Text(
-                                  "save",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ],
-                          );
-                        });
-                  },
-                  child: Text('Add Workout'),
-                ),
-                Text(
-                  '${widget.name} Workout',
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-                ),
-                Container(
-                    height: 300,
-                    child: Column(
-                      children: list,
-                    ),
-                ),
-                // ListView.builder(
-                //     itemCount: Exercises.length,
-                //     itemBuilder: (BuildContext context, int index) {
-                //       Exercises.forEach((key, value) {
-                //         print(key);
-                //         print(value['stringExample']);
-                //       });
-                //     }
+                _showAdminButton(),
+                // Text(
+                //   '${widget.name} Exercise',
+                //   style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                 // ),
-
-                // StreamBuilder<QuerySnapshot>(
-                //   stream: FirebaseFirestore.instance
-                //       .collection("exercises")
-                //       .snapshots(),
-                //   builder: (BuildContext context,
-                //       AsyncSnapshot<QuerySnapshot> snapshot) {
-                //     if (snapshot.hasData) {
-                //       final snap = snapshot.data!.docs;
-                //       return Expanded(
-                //         // height: 566,
-                //         child: ListView.builder(
-                //           scrollDirection: Axis.vertical,
-                //           shrinkWrap: true,
-                //           itemCount: snap.length,
-                //           itemBuilder: (context, index) {
-                //             // Exercises.map((key, value) {
-                //             //   print(value);
-                //             // });
-                //             Exercises.forEach((key, value) {
-                //               print(Exercises.length);
-                //               print(key);
-                //               print(value['stringExample']);
-                //             });
-                //           },
-                //         ),
-                //       );
-                //     } else {
-                //       return Center(
-                //         child: CircularProgressIndicator(),
-                //       );
-                //     }
-                //   },
-                // ),
-
                 // Container(
-                //   height: 623,
-                //   decoration: BoxDecoration(
-                //     border: Border(
-                //       bottom: BorderSide(
-                //         color: Colors.black
-                //       )
-                //     )
+                //   height: 300,
+                //   child: Column(
+                //     children: list,
                 //   ),
-                //   // height: double.infinity,
-                //   child: ListView(
-                //     children: [
-                //       cardContent(widget.name),
-                //       // cardContent('Bench Dips'),
-                //       // cardContent('Bench Dips'),
-                //       // cardContent('Bench Dips'),
-                //       // cardContent('Bench Dips'),
-                //     ],
-                //   ),
-                // )
+                // ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     showDialog(
+                //         context: context,
+                //         builder: (BuildContext context) {
+                //           return AlertDialog(
+                //             content: Column(
+                //               mainAxisSize: MainAxisSize.min,
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: <Widget>[
+                //                 Text("Add Exercise"),
+                //                 Padding(
+                //                   padding: EdgeInsets.only(top: 10),
+                //                   child: Text(
+                //                     "Name: ",
+                //                     textAlign: TextAlign.start,
+                //                   ),
+                //                 ),
+                //                 TextField(
+                //                   controller: nameController,
+                //                 ),
+                //                 Padding(
+                //                   padding: EdgeInsets.only(top: 20),
+                //                   child: Text("Image: "),
+                //                 ),
+                //                 TextField(
+                //                   controller: imageController,
+                //                 ),
+                //               ],
+                //             ),
+                //             actions: <Widget>[
+                //               Padding(
+                //                 padding: EdgeInsets.symmetric(horizontal: 10),
+                //                 child: ElevatedButton(
+                //                   // color: Colors.red,
+                //                   onPressed: () {
+                //                     Navigator.of(context).pop();
+                //                   },
+                //                   child: Text(
+                //                     "Undo",
+                //                     style: TextStyle(color: Colors.white),
+                //                   ),
+                //                 ),
+                //               ),
+                //               ElevatedButton(
+                //                 onPressed: () {
+                //                   //TODO: Firestore create a new record code
+                //
+                //                   Map<String, dynamic> exerciseToAdd= {
+                //                     'name': nameController.text,
+                //                     'image': imageController.text
+                //                   };
+                //                   _referenceExercises.add(exerciseToAdd);
+                //                   Navigator.pop(context);
+                //                 },
+                //                 child: Text(
+                //                   "save",
+                //                   style: TextStyle(color: Colors.white),
+                //                 ),
+                //               ),
+                //             ],
+                //           );
+                //         });
+                //   },
+                //   child: Text('Add Exercise'),
+                // ),
+                Expanded(child: buildWorkoutListView())
+
               ],
             ),
           ),
@@ -324,6 +258,160 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
       ),
     );
   }
+
+  Widget buildWorkoutListView() {
+    return StreamBuilder<QuerySnapshot>(
+        stream: _streamExercises,
+        builder: (BuildContext context,  AsyncSnapshot snapshot) {
+          if( snapshot.hasError){
+            return Center(child: Text('Some error occured ${snapshot.error}'),);
+          }
+
+          if(snapshot.hasData){
+            QuerySnapshot data = snapshot.data;
+            List<QueryDocumentSnapshot> documents =data.docs;
+            List<Map> items = documents.map((e) => {
+              'name' : e['name'],
+              'image' : e['image']
+              // 'images':
+            }).toList();
+            return ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                Map thisItem = items[index];
+                // return ListTile(title: Text(thisItem['name'].toString()),);
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.black54),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    // padding: EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xff3C6B62),
+                          Color(0xff1B2826),
+                        ],
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          thisItem['name'].toString(),
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        Image.asset(thisItem['image'].toString(), height: 100,)
+                      ],
+                    ),
+                  ),
+                );
+
+              },
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        }
+    );
+  }
+
+  _showAdminButton() {
+
+    if( widget.userInfo['type'] == "admin"){
+      return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shadowColor: Colors.black,
+            elevation: 20,
+            backgroundColor:  Color(0xff5FB28B),
+            side: BorderSide(
+              width: 3,
+              color: Color(0xff3C615A) ,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            // onPrimary: Color(0xff1F3040),
+          ),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Add Exercise"),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(
+                          "Name: ",
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      TextField(
+                        controller: nameController,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Text("Image: "),
+                      ),
+                      TextField(
+                        controller: imageController,
+                      ),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: ElevatedButton(
+                        // color: Colors.red,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "Undo",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        //TODO: Firestore create a new record code
+
+                        Map<String, dynamic> exerciseToAdd= {
+                          'name': nameController.text,
+                          'image': imageController.text
+                        };
+                        _referenceExercises.add(exerciseToAdd);
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "save",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                );
+              });
+        },
+        child: Text('Add Exercise'),
+      );
+    }else {
+      return Text(
+        '${widget.name} Exercise',
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+      );
+    }
+  }
+
+
 }
 
 Widget listStuff(Exercises) {
@@ -382,14 +470,14 @@ Widget cardContent(text) {
     child: Card(
       shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.black54),
-          borderRadius: BorderRadius.circular(20.0)),
+          borderRadius: BorderRadius.circular(5.0)),
       // shape: CircleBorder(
       //   side: BorderSide(color: Colors.white)
       // ),
       child: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(5.0),
           gradient: LinearGradient(
             colors: [
               Color(0xff3C6B62),
