@@ -3,7 +3,6 @@ import 'package:fitwork/Login/SigninPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:compass_icon/compass_icon.dart';
 import '../Login/loginPage.dart';
 import '../Discover/discoverPage.dart';
 import '../Workout/WorkoutPage.dart';
@@ -108,14 +107,12 @@ class _HomePageState extends State<HomePage> {
           // backgroundColor: Colors.blueGrey,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: CompassIcon(
+              icon:
                 Icon(
                   Icons.arrow_circle_up,
                   size: 50,
                 ),
-                compassDirection: CompassDirection.north,
-                initialDirection: CompassDirection.north,
-              ),
+
               label: 'Discover',
               backgroundColor: Color(0xff3C6B62),
             ),

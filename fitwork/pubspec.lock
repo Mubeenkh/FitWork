@@ -121,14 +121,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
-  compass_icon:
-    dependency: "direct main"
-    description:
-      name: compass_icon
-      sha256: "45b64342317556b62320d030ebb5939efdb8b63402252fc838832e510283f1cf"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.4"
   convert:
     dependency: transitive
     description:
