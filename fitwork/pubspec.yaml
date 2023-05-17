@@ -91,6 +91,13 @@ flutter:
     - assets/images/Nutrition/vitamins.jpg
     - assets/images/Nutrition/water.jpg
     - assets/images/Workout/defaultImage.png
+    - assets/images/Avatars/cat.png
+    - assets/images/Avatars/chicken.png
+    - assets/images/Avatars/giraffe.png
+    - assets/images/Avatars/koala.png
+    - assets/images/Avatars/panda.png
+    - assets/images/Avatars/rabbit.png
+    - assets/images/Avatars/sea-lion.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

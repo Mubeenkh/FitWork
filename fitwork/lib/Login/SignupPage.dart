@@ -122,6 +122,7 @@ class _SignupPageState extends State<SignupPage> {
                               User['username'] = usernameController.text;
                               User['email'] = emailController.text;
                               User['password'] = passwordController.text;
+                              User['avatar'] = '';
                               User['type'] = 'user';
                               // //todo: send to database
                               FirebaseAuth.instance

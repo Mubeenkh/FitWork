@@ -41,7 +41,7 @@ class _ProfileState extends State<Profile> {
         ),
         Positioned(
           top: top,
-          child: buildAvatarImage(),
+          child: showAvatarImage(),
         ),
       ],
     );
@@ -58,13 +58,31 @@ class _ProfileState extends State<Profile> {
         ),
       );
 
-  Widget buildAvatarImage() =>
-      CircleAvatar(
+  showAvatarImage() {
+    if (widget.userInfo['avatar'].toString() != "") {
+      return CircleAvatar(
         radius: avatarHeight / 2,
         backgroundColor: Colors.white,
-        backgroundImage: NetworkImage(
-            "https://em-content.zobj.net/thumbs/160/apple/96/new-moon-with-face_1f31a.png"),
+        // This and
+        child: Image.asset(
+            widget.userInfo['avatar'].toString()
+        ),
       );
+    }
+    else {
+      return CircleAvatar(
+        radius: avatarHeight / 2,
+        backgroundColor: Colors.white,
+        child: CircleAvatar(
+          radius: avatarHeight / 2 - 4,
+          backgroundImage: NetworkImage(
+              "https://www.testhouse.net/wp-content/uploads/2021/11/default-avatar.jpg",
+          ),
+          backgroundColor: Colors.white,
+        ),
+      );
+    }
+  }
 
   Widget buildContent() =>
       Container(
