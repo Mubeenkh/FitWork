@@ -27,7 +27,27 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
   late CollectionReference _referenceExercises =  _documentReference.collection('exercises');
   late Stream<QuerySnapshot> _streamExercises = _referenceExercises.snapshots();
 
-  //--------------
+  //-------------- This is the entire proccess for updating the thingy --------------//
+  int exerciseIndex = 0;
+  String exerciseId = '';
+  _getExerciseLenght(index){
+    setState(() {
+      exerciseIndex = index;
+      // print(exerciseIndex);
+    });
+  }
+  Future<void> _getDocumentID( name) async {
+    List list = [];
+    await FirebaseFirestore.instance.collection('workout').doc(widget.name).collection('exercises').get().then((value) {
+      for(var val in value.docs){
+        list.add(val.id);
+      }
+    });
+    String num = await FirebaseFirestore.instance.collection('workout').doc(widget.name).collection('exercises').doc(list[exerciseIndex]).id;
+    // print(list);
+    // print('$exerciseIndex : $num');
+    exerciseId =  num;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,19 +136,19 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
             List<Map> items = documents.map((e) => {
               'name' : e['name'],
               'image' : e['image']
-              // 'images':
             }).toList();
             return ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {
                 Map exerciseItem = items[index];
-                // return ListTile(title: Text(thisItem['name'].toString()),);
                 return GestureDetector(
                   onTap: () {
 
                     if(widget.userInfo['type'] == "admin"){
+
                       updateNameExerciseController.text = exerciseItem['name'];
                       updateImageExerciseController.text = exerciseItem['image'];
+                      // String exerciseDocumentId = exerciseItem['name'];
                       _showAdminEditAlertDialog(exerciseItem, index);
                     }
                     // Flushbar(
@@ -210,6 +230,9 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
             // onPrimary: Color(0xff1F3040),
           ),
         onPressed: () {
+
+          // _getDocumentID();
+
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -260,7 +283,8 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                           'name': nameController.text,
                           'image': imageController.text
                         };
-                        _referenceExercises.add(exerciseToAdd);
+                        // _referenceExercises.add(exerciseToAdd);
+                        _referenceExercises.doc(exerciseToAdd['name']).set(exerciseToAdd);
                         Navigator.pop(context);
                       },
                       child: Text(
@@ -282,8 +306,8 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
     }
   }
 
-  _showAdminEditAlertDialog( exerciseItem, documentId) {
-
+  _showAdminEditAlertDialog( exerciseItem, exerciseDocumentId) {
+    _getExerciseLenght(exerciseDocumentId);
     return showDialog(
       // barrierColor: Color(0xff3C615A),
       barrierDismissible: false,
@@ -352,17 +376,20 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                           updateWorkout['name'] = updateNameExerciseController.text;
                           updateWorkout['image'] = updateImageExerciseController.text;
                           print(updateWorkout);
+
+                          _getDocumentID(exerciseItem['name']);
                           FirebaseFirestore.instance
                               .collection("workout")
                               .doc(widget.name)
-                              .collection(updateWorkout['name'])
-                              .doc(updateWorkout['name'][documentId])
+                              .collection('exercises')
+                              .doc(exerciseId)
                               .update(updateWorkout)
                               .whenComplete(() {
                             Navigator.pop(context);
                             updateImageExerciseController.clear();
                             updateNameExerciseController.clear();
                           });
+
                         },
                         child: Text('Save Change'),
                       ),
@@ -400,8 +427,6 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
       },
     );
   }
-
-
 }
 
 _buttonStyle() {
