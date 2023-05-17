@@ -3,6 +3,7 @@ import 'package:fitwork/Login/SigninPage.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../Profile/avatarSelectionPage.dart';
 
 ///-------------------------------------Profile Page -------------------------------------///
 class Profile extends StatefulWidget {
@@ -62,13 +63,17 @@ class _ProfileState extends State<Profile> {
     if (widget.userInfo['avatar'].toString() != "") {
       // widget.userInfo.clear();
       print(widget.userInfo);
-      return CircleAvatar(
-        radius: avatarHeight / 2,
-        backgroundColor: Colors.white,
-        // This and
-        child: Image.asset(
-            widget.userInfo['avatar'].toString()
-        ),
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => avatarSelectionPage()));
+        },
+        child:    CircleAvatar(
+          radius: avatarHeight / 2,
+          backgroundColor: Colors.white,
+          child: Image.asset(
+              widget.userInfo['avatar'].toString()
+          ),
+        )
       );
     }
     else {

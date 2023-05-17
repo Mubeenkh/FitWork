@@ -75,31 +75,31 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-#    - assets/images/appicon.png
-#    - assets/images/justlogo.png
-#    - assets/images/logo.png
-#    - assets/images/logoWithBack.png
-#    - assets/images/sampleWorkout.png
-#    - assets/images/Workout/chest.jpg
-#    - assets/images/Workout/Back.png
-#    - assets/images/Workout/Biceps.png
-#    - assets/images/Workout/leg.jpg
-#    - assets/images/Workout/triceps.jpg
-#    - assets/images/Workout/Deltroid.jpg
-#    - assets/images/Nutrition/carbohydrates.jpg
-#    - assets/images/Nutrition/fats.jpg
-#    - assets/images/Nutrition/proteins.jpg
-#    - assets/images/Nutrition/vitamins.jpg
-#    - assets/images/Nutrition/water.jpg
-#    - assets/images/Workout/defaultImage.png
-#    - assets/images/Avatars/cat.png
-#    - assets/images/Avatars/chicken.png
-#    - assets/images/Avatars/giraffe.png
-#    - assets/images/Avatars/koala.png
-#    - assets/images/Avatars/panda.png
-#    - assets/images/Avatars/rabbit.png
-#    - assets/images/Avatars/sea-lion.png
-#    - assets/images/Avatars/dog.png
+    - assets/images/appicon.png
+    - assets/images/justlogo.png
+    - assets/images/logo.png
+    - assets/images/logoWithBack.png
+    - assets/images/sampleWorkout.png
+    - assets/images/Workout/chest.jpg
+    - assets/images/Workout/Back.png
+    - assets/images/Workout/Biceps.png
+    - assets/images/Workout/leg.jpg
+    - assets/images/Workout/triceps.jpg
+    - assets/images/Workout/Deltroid.jpg
+    - assets/images/Nutrition/carbohydrates.jpg
+    - assets/images/Nutrition/fats.jpg
+    - assets/images/Nutrition/proteins.jpg
+    - assets/images/Nutrition/vitamins.jpg
+    - assets/images/Nutrition/water.jpg
+    - assets/images/Workout/defaultImage.png
+    - assets/images/Avatars/cat.png
+    - assets/images/Avatars/chicken.png
+    - assets/images/Avatars/giraffe.png
+    - assets/images/Avatars/koala.png
+    - assets/images/Avatars/panda.png
+    - assets/images/Avatars/rabbit.png
+    - assets/images/Avatars/sea-lion.png
+    - assets/images/Avatars/dog.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
