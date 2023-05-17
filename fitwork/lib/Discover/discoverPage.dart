@@ -39,7 +39,6 @@ class _DiscoverState extends State<Discover> {
 
     if (_exercisesCollection.docs.isNotEmpty) {
       // print('is not empty');
-
       return Flushbar(
         flushbarPosition: FlushbarPosition.TOP,
         message: "Cannot delete: ${clickedName}",
@@ -49,8 +48,6 @@ class _DiscoverState extends State<Discover> {
           color: Colors.black,
         ),
         duration: Duration(seconds: 3),
-        // leftBarIndicatorColor: Colors.green[900],
-        // backgroundColor: Colors.black54,
         backgroundGradient: LinearGradient(
           colors: [
             Colors.red.shade500,
@@ -63,9 +60,10 @@ class _DiscoverState extends State<Discover> {
       // return true;
     } else {
       // print('is empty');
+
       return Flushbar(
         flushbarPosition: FlushbarPosition.TOP,
-        message: "Can delete",
+        message: "Successfully deleted: ${clickedName} Workouts",
 
         icon: Icon(
           Icons.info,
@@ -73,8 +71,6 @@ class _DiscoverState extends State<Discover> {
           color: Colors.black,
         ),
         duration: Duration(seconds: 3),
-        // leftBarIndicatorColor: Colors.green[900],
-        // backgroundColor: Colors.black54,
         backgroundGradient: LinearGradient(
           colors: [
             Colors.green.shade500,
@@ -83,7 +79,12 @@ class _DiscoverState extends State<Discover> {
           ],
           stops: [0.4, 0.7, 1],
         ),
-      )..show(context);
+      )..show(context).then((value) {
+        // FirebaseFirestore.instance.collection('workout').doc(clickedName).collection('exercises').doc().delete();
+        FirebaseFirestore.instance.collection('workout').doc(clickedName).delete();
+      });
+
+
       // FirebaseFirestore.instance.collection('workout').doc(clickedName).collection('exercises').doc().delete();
       // return false;
     }
@@ -244,6 +245,8 @@ class _DiscoverState extends State<Discover> {
                       // color: Colors.red,
                       onPressed: () {
                         Navigator.of(context).pop();
+                        nameWorkoutController.clear();
+                        imageWorkoutController.clear();
                       },
                       child: Text(
                         "Back",
@@ -258,7 +261,7 @@ class _DiscoverState extends State<Discover> {
 
                       Map<String, dynamic> Workout = new Map<String, dynamic>();
                       Workout['name'] = nameWorkoutController.text;
-                      Workout['image'] = imageWorkoutController.text;
+                      Workout['image'] = "assets/images/Workout/${imageWorkoutController.text}";
                       // //todo: send to database
 
                       FirebaseFirestore.instance
