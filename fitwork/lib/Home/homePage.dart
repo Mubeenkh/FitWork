@@ -10,6 +10,7 @@ import '../Home/timerPage.dart';
 import '../Models/Quote.dart';
 import '../Services/quote_service.dart';
 import 'dart:math';
+import '../Nutrition/selectNutritionPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.email}) : super(key: key);
@@ -63,7 +64,7 @@ class _HomePageState extends State<HomePage> {
       Discover(userInfo: User),
       Workout(),
       Home(),
-      Nutrition(),
+      Nutrition(userInfo: User),
       Profile(userInfo: User),
     ];
 
@@ -335,20 +336,6 @@ class _quoteWidgetState extends State<quoteWidget> {
   }
 }
 
-///-------------------------------------Nutrition Page -------------------------------------///
-class Nutrition extends StatefulWidget {
-  const Nutrition({Key? key}) : super(key: key);
-
-  @override
-  State<Nutrition> createState() => _NutritionState();
-}
-
-class _NutritionState extends State<Nutrition> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
 
 ///-------------------------------------Profile Page -------------------------------------///
 class Profile extends StatefulWidget {
