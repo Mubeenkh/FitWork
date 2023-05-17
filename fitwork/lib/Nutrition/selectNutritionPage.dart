@@ -30,7 +30,6 @@ class _NutritionState extends State<Nutrition> {
 
   //Deletting
   Future<Widget> _isCollectionExits(clickedName) async {
-    //Checking if the Exercise collection is empty before deleting it
     QuerySnapshot<Map<String, dynamic>> _foodsCollection =
     await FirebaseFirestore.instance
         .collection('nutrition')
@@ -50,8 +49,6 @@ class _NutritionState extends State<Nutrition> {
           color: Colors.black,
         ),
         duration: Duration(seconds: 3),
-        // leftBarIndicatorColor: Colors.green[900],
-        // backgroundColor: Colors.black54,
         backgroundGradient: LinearGradient(
           colors: [
             Colors.red.shade500,
@@ -66,7 +63,7 @@ class _NutritionState extends State<Nutrition> {
       // print('is empty');
       return Flushbar(
         flushbarPosition: FlushbarPosition.TOP,
-        message: "Can delete",
+        message: "Successfully deleted: ${clickedName} Foods",
 
         icon: Icon(
           Icons.info,
@@ -74,8 +71,6 @@ class _NutritionState extends State<Nutrition> {
           color: Colors.black,
         ),
         duration: Duration(seconds: 3),
-        // leftBarIndicatorColor: Colors.green[900],
-        // backgroundColor: Colors.black54,
         backgroundGradient: LinearGradient(
           colors: [
             Colors.green.shade500,
@@ -84,9 +79,9 @@ class _NutritionState extends State<Nutrition> {
           ],
           stops: [0.4, 0.7, 1],
         ),
-      )..show(context);
-      // FirebaseFirestore.instance.collection('nutrition').doc(clickedName).collection('foods').doc().delete();
-      // return false;
+      )..show(context).then((value) {
+        FirebaseFirestore.instance.collection('nutrition').doc(clickedName).delete();
+      });
     }
   }
 
@@ -247,6 +242,8 @@ class _NutritionState extends State<Nutrition> {
                       // color: Colors.red,
                       onPressed: () {
                         Navigator.of(context).pop();
+                        nameNutritionController.clear();
+                        imageNutritionController.clear();
                       },
                       child: Text(
                         "Back",
@@ -366,7 +363,7 @@ class _NutritionState extends State<Nutrition> {
 
                             // Update Firestore record information regular way
                             FirebaseFirestore.instance
-                                .collection("workout")
+                                .collection("nutrition")
                                 .doc(updateNutrition['name'])
                                 .update(updateNutrition)
                                 .whenComplete(() {
@@ -427,7 +424,7 @@ class _NutritionState extends State<Nutrition> {
                                     name: snap[index]['name'],
                                     userInfo: widget.userInfo)));
                       },
-                      child: Text("View Exerciese",
+                      child: Text("View Foods",
                           style: TextStyle(color: Colors.white)),
                     ),
                   ],

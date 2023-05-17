@@ -11,6 +11,7 @@ import '../Models/Quote.dart';
 import '../Services/quote_service.dart';
 import 'dart:math';
 import '../Nutrition/selectNutritionPage.dart';
+import '../Profile/profilePage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.email}) : super(key: key);
@@ -337,41 +338,5 @@ class _quoteWidgetState extends State<quoteWidget> {
 }
 
 
-///-------------------------------------Profile Page -------------------------------------///
-class Profile extends StatefulWidget {
-  const Profile({Key? key, required this.userInfo}) : super(key: key);
-  final Map<String, dynamic> userInfo;
 
-  @override
-  State<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Container(),
-          Text(widget.userInfo['email'].toString()),
-          Text(widget.userInfo['username'].toString()),
-          Text(widget.userInfo['type'].toString()),
-          TextButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut().then((value) {
-                print("Sign Out");
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SigninPage(),
-                    ));
-              });
-            },
-            child: Text('Sign Out'),
-          ),
-        ],
-      ),
-    );
-  }
 }

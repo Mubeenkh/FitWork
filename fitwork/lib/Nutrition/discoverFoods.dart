@@ -8,6 +8,7 @@ class DiscoverFoods extends StatefulWidget {
   const DiscoverFoods({Key? key, required this.name, required this.userInfo}) : super(key: key);
   final String name;
   final Map<String,dynamic> userInfo;
+
   @override
   State<DiscoverFoods> createState() => _DiscoverFoodsState();
 }
@@ -17,10 +18,15 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
   TextEditingController nameController = new TextEditingController();
   TextEditingController imageController = new TextEditingController();
 
+  TextEditingController updateNameNutritionController = new TextEditingController();
+  TextEditingController updateImageNutritionController = new TextEditingController();
+
+
+
   late  DocumentReference _documentReference = FirebaseFirestore.instance.collection('nutrition').doc(widget.name);
 
-  late CollectionReference _referenceExercises =  _documentReference.collection('foods');
-  late Stream<QuerySnapshot> _streamExercises = _referenceExercises.snapshots();
+  late CollectionReference _referenceFoods =  _documentReference.collection('foods');
+  late Stream<QuerySnapshot> _streamFoods = _referenceFoods.snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +85,6 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
         body: Container(
           // height: double.infinity,
           decoration: BoxDecoration(
-            // gradient: LinearGradient(
-            //   colors: [
-            //     Color(0xff1F3040),
-            //     Color(0xff3C6B62),
-            //     Color(0xff5FB28B),
-            //     Color(0xff5FB28B),
-            //   ],
-            // ),
             color: Color(0xffbad9c1),
           ),
           child: Center(
@@ -107,7 +105,7 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
 
   Widget buildNutritionListView() {
     return StreamBuilder<QuerySnapshot>(
-        stream: _streamExercises,
+        stream: _streamFoods,
         builder: (BuildContext context,  AsyncSnapshot snapshot) {
           if( snapshot.hasError){
             return Center(child: Text('Some error occured ${snapshot.error}'),);
@@ -124,41 +122,47 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
             return ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {
-                Map thisItem = items[index];
+                Map foodItem = items[index];
                 // return ListTile(title: Text(thisItem['name'].toString()),);
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.black54),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    // padding: EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
+                return GestureDetector(
+                  onTap: () {
+                    if(widget.userInfo['type'] == "admin"){
+                      _showAdminEditAlertDialog(foodItem, index);
+                    }
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black54),
                       borderRadius: BorderRadius.circular(20.0),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xff3C6B62),
-                          Color(0xff1B2826),
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      // padding: EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xff3C6B62),
+                            Color(0xff1B2826),
+                          ],
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            foodItem['name'].toString(),
+                            style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Image.asset(foodItem['image'], height: 100,)
                         ],
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          thisItem['name'].toString(),
-                          style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                        Image.asset(thisItem['image'].toString(), height: 100,)
-                      ],
-                    ),
                   ),
                 );
-
               },
             );
           }
@@ -230,11 +234,11 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
                       onPressed: () {
                         //TODO: Firestore create a new record code
 
-                        Map<String, dynamic> exerciseToAdd= {
+                        Map<String, dynamic> foodToAdd= {
                           'name': nameController.text,
                           'image': imageController.text
                         };
-                        _referenceExercises.add(exerciseToAdd);
+                        _referenceFoods.add(foodToAdd);
                         Navigator.pop(context);
                       },
                       child: Text(
@@ -255,94 +259,141 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
       );
     }
   }
-}
-Widget listStuff(Foods) {
-  List<Widget> list = [];
+  _showAdminEditAlertDialog(foodItem, documentId) {
 
-  Foods.forEach(
-        (key, value) {
-      print(key);
-      print(value['stringExample']);
-      // list.add(new Text(key));
-      // list.add(new Text(value['stringExample']));
-      list.add(
-        new Card(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.black54),
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(8),
-            // padding: EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xff3C6B62),
-                  Color(0xff1B2826),
-                ],
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    updateNameNutritionController.text = foodItem['name'];
+    updateImageNutritionController.text = foodItem['image'];
+
+    return showDialog(
+      // barrierColor: Color(0xff3C615A),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: Color(0xffbad9c1),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  key,
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      side: BorderSide(
+                        width: 3,
+                        color: Color(0xff3C615A),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      updateImageNutritionController.clear();
+                      updateNameNutritionController.clear();
+                    },
+                    child: Text(
+                      'Back',
+                      style: TextStyle(color: Color(0xff3C615A)),
+                    ),
+                  ),
                 ),
-                Image.asset('assets/images/sampleWorkout.png')
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Text(
+                      "Name: ",
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+                TextField(
+                    decoration: InputDecoration(
+                        filled: true, fillColor: Colors.white, hintText: 'Food Name'),
+                    controller: updateNameNutritionController),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Text("Image: "),
+                  ),
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                      filled: true, fillColor: Colors.white, hintText: 'Food Image'),
+                  controller: updateImageNutritionController,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: _buttonStyle(),
+                        onPressed: () {
+
+                          Map<String, dynamic> updateFood =
+                          new Map<String, dynamic>();
+                          updateFood['name'] = updateNameNutritionController.text;
+                          updateFood['image'] = 'assets/images/Nutrition/${updateImageNutritionController.text}';
+                          print(updateFood);
+                          FirebaseFirestore.instance
+                              .collection("nutrition")
+                              .doc(widget.name)
+                              .collection(updateFood['name'])
+                              .doc(documentId)
+                              .update(updateFood)
+                              .whenComplete(() {
+                            Navigator.pop(context);
+                            updateImageNutritionController.clear();
+                            updateNameNutritionController.clear();
+                          });
+                        },
+                        child: Text('Save Change'),
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: _buttonStyle(),
+                        onPressed: () {
+
+                          Map<String, dynamic> updateFood =
+                          new Map<String, dynamic>();
+
+                          FirebaseFirestore.instance
+                              .collection("nutrition")
+                              .doc(updateFood['name'])
+                              .update(updateFood)
+                              .whenComplete(() {
+                            Navigator.pop(context);
+                            updateImageNutritionController.clear();
+                            updateNameNutritionController.clear();
+                          });
+                        },
+                        child: Text('Delete'),
+                      ),
+                    )
+                  ],
+                )
               ],
             ),
-          ),
-        ),
-      );
-    },
+          );
+        });
+      },
+    );
+  }
+}
+_buttonStyle() {
+  return ElevatedButton.styleFrom(
+    shadowColor: Colors.black,
+    elevation: 20,
+    backgroundColor: Color(0xff5FB28B),
+    side: BorderSide(
+      width: 3,
+      color: Color(0xff3C615A),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+    ),
+    // onPrimary: Color(0xff1F3040),
   );
-  return new Column(children: list);
 }
 
-Widget cardContent(text) {
-  return GestureDetector(
-    onTap: () {
-      print('workout time');
-    },
-    child: Card(
-      shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.black54),
-          borderRadius: BorderRadius.circular(5.0)),
-      // shape: CircleBorder(
-      //   side: BorderSide(color: Colors.white)
-      // ),
-      child: Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.0),
-          gradient: LinearGradient(
-            colors: [
-              Color(0xff3C6B62),
-              Color(0xff1B2826),
-            ],
-          ),
-        ),
-        // padding: EdgeInsets.all(20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            Image.asset('assets/images/sampleWorkout.png')
-          ],
-        ),
-      ),
-    ),
-  );
-}
 
