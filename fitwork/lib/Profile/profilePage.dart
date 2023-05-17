@@ -60,6 +60,8 @@ class _ProfileState extends State<Profile> {
 
   showAvatarImage() {
     if (widget.userInfo['avatar'].toString() != "") {
+      // widget.userInfo.clear();
+      print(widget.userInfo);
       return CircleAvatar(
         radius: avatarHeight / 2,
         backgroundColor: Colors.white,
@@ -102,6 +104,8 @@ class _ProfileState extends State<Profile> {
               onPressed: () {
                 FirebaseAuth.instance.signOut().then((value) {
                   print("Sign Out");
+                  widget.userInfo.clear();
+                  print(widget.userInfo);
                   Navigator.push(
                       context,
                       MaterialPageRoute(

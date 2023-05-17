@@ -125,7 +125,10 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                 // return ListTile(title: Text(thisItem['name'].toString()),);
                 return GestureDetector(
                   onTap: () {
+
                     if(widget.userInfo['type'] == "admin"){
+                      updateNameExerciseController.text = exerciseItem['name'];
+                      updateImageExerciseController.text = exerciseItem['image'];
                       _showAdminEditAlertDialog(exerciseItem, index);
                     }
                     // Flushbar(
@@ -281,9 +284,6 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
 
   _showAdminEditAlertDialog( exerciseItem, documentId) {
 
-    updateNameExerciseController.text = exerciseItem['name'];
-    updateImageExerciseController.text = exerciseItem['image'];
-
     return showDialog(
       // barrierColor: Color(0xff3C615A),
       barrierDismissible: false,
@@ -348,16 +348,15 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                         style: _buttonStyle(),
                         onPressed: () {
 
-                          Map<String, dynamic> updateWorkout =
-                          new Map<String, dynamic>();
+                          Map<String, dynamic> updateWorkout = new Map<String, dynamic>();
                           updateWorkout['name'] = updateNameExerciseController.text;
-                          updateWorkout['image'] = 'assets/images/Workout/${updateImageExerciseController.text}';
+                          updateWorkout['image'] = updateImageExerciseController.text;
                           print(updateWorkout);
                           FirebaseFirestore.instance
                               .collection("workout")
                               .doc(widget.name)
                               .collection(updateWorkout['name'])
-                              .doc(documentId)
+                              .doc(updateWorkout['name'][documentId])
                               .update(updateWorkout)
                               .whenComplete(() {
                             Navigator.pop(context);
