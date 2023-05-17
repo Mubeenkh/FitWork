@@ -339,4 +339,4 @@ class _quoteWidgetState extends State<quoteWidget> {
 
 
 
-}
+
