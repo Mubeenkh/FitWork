@@ -24,6 +24,30 @@ class _DiscoverState extends State<Discover> {
   TextEditingController updateImageWorkoutController =
       new TextEditingController();
 
+  //-------------- This is the entire proccess for updating the thingy --------------//
+  int exerciseIndex = 0;
+  String exerciseId = '';
+  _getExerciseLenght(index){
+    setState(() {
+      exerciseIndex = index;
+      // print(exerciseIndex);
+    });
+  }
+  Future<void> _getDocumentID() async {
+    List list = [];
+    await FirebaseFirestore.instance.collection('workout').get().then((value) {
+      for(var val in value.docs){
+        list.add(val.id);
+        // print(val.id);
+      }
+    });
+    String num = await FirebaseFirestore.instance.collection('workout').doc(list[exerciseIndex]).id;
+    // print(list);
+    print('$exerciseIndex : $num');
+    exerciseId =  num;
+  }
+
+
   //for the edit option
   bool _isShow = false;
 
@@ -81,7 +105,7 @@ class _DiscoverState extends State<Discover> {
         ),
       )..show(context).then((value) {
         // FirebaseFirestore.instance.collection('workout').doc(clickedName).collection('exercises').doc().delete();
-        FirebaseFirestore.instance.collection('workout').doc(clickedName).delete();
+        FirebaseFirestore.instance.collection('workout').doc(exerciseId).delete();
       });
 
 
@@ -107,10 +131,8 @@ class _DiscoverState extends State<Discover> {
           ),
 
           StreamBuilder<QuerySnapshot>(
-            stream:
-                FirebaseFirestore.instance.collection("workout").snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            stream: FirebaseFirestore.instance.collection("workout").snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasData) {
                 final snap = snapshot.data!.docs;
                 return Expanded(
@@ -125,6 +147,8 @@ class _DiscoverState extends State<Discover> {
                           GestureDetector(
                             onTap: () {
                               if (widget.userInfo['type'] == "admin") {
+                                _getExerciseLenght(index);
+                                _getDocumentID();
                                 _showAdminClickedCard(snap, index);
                               } else {
                                 Navigator.push(
@@ -266,8 +290,9 @@ class _DiscoverState extends State<Discover> {
 
                       FirebaseFirestore.instance
                           .collection("workout")
-                          .doc(Workout['name'])
-                          .set(Workout);
+                          .add(Workout);
+                          // .doc(Workout['name'])
+                          // .set(Workout);
                       Navigator.pop(context);
                       nameWorkoutController.clear();
                       imageWorkoutController.clear();
@@ -368,7 +393,7 @@ class _DiscoverState extends State<Discover> {
                             // Update Firestore record information regular way
                             FirebaseFirestore.instance
                                 .collection("workout")
-                                .doc(updateWorkout['name'])
+                                .doc(exerciseId)
                                 .update(updateWorkout)
                                 .whenComplete(() {
                               Navigator.pop(context);
