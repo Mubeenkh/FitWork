@@ -80,13 +80,18 @@ class _ProfileState extends State<Profile> {
       return CircleAvatar(
         radius: avatarHeight / 2,
         backgroundColor: Colors.white,
-        child: CircleAvatar(
-          radius: avatarHeight / 2 - 4,
-          backgroundImage: NetworkImage(
-              "https://www.testhouse.net/wp-content/uploads/2021/11/default-avatar.jpg",
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => avatarSelectionPage()));
+          },
+          child: CircleAvatar(
+            radius: avatarHeight / 2 - 4,
+            backgroundImage: NetworkImage(
+                "https://www.testhouse.net/wp-content/uploads/2021/11/default-avatar.jpg",
+            ),
+            backgroundColor: Colors.white,
           ),
-          backgroundColor: Colors.white,
-        ),
+        )
       );
     }
   }

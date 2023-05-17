@@ -8,7 +8,6 @@ class DiscoverFoods extends StatefulWidget {
   const DiscoverFoods({Key? key, required this.name, required this.userInfo}) : super(key: key);
   final String name;
   final Map<String,dynamic> userInfo;
-
   @override
   State<DiscoverFoods> createState() => _DiscoverFoodsState();
 }
@@ -18,15 +17,32 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
   TextEditingController nameController = new TextEditingController();
   TextEditingController imageController = new TextEditingController();
 
-  TextEditingController updateNameNutritionController = new TextEditingController();
-  TextEditingController updateImageNutritionController = new TextEditingController();
-
+  TextEditingController updateNameFoodController = new TextEditingController();
+  TextEditingController updateImageFoodController = new TextEditingController();
 
 
   late  DocumentReference _documentReference = FirebaseFirestore.instance.collection('nutrition').doc(widget.name);
 
   late CollectionReference _referenceFoods =  _documentReference.collection('foods');
   late Stream<QuerySnapshot> _streamFoods = _referenceFoods.snapshots();
+
+  int foodIndex = 0;
+  String foodId = '';
+  _getFoodLenght(index){
+    setState(() {
+      foodIndex = index;
+    });
+  }
+  Future<void> _getDocumentID() async {
+    List list = [];
+    await FirebaseFirestore.instance.collection('nutrition').doc(widget.name).collection('foods').get().then((value) {
+      for(var val in value.docs){
+        list.add(val.id);
+      }
+    });
+    String num = await FirebaseFirestore.instance.collection('nutrition').doc(widget.name).collection('foods').doc(list[foodIndex]).id;
+    foodId =  num;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +53,6 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
           preferredSize: Size.fromHeight(70.0),
           child: AppBar(
             elevation: 0.0,
-            // backgroundColor: Colors.transparent,
             title: Align(
               alignment: Alignment.center,
               child: GestureDetector(
@@ -127,6 +142,9 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
                 return GestureDetector(
                   onTap: () {
                     if(widget.userInfo['type'] == "admin"){
+                      updateNameFoodController.text = foodItem['name'];
+                      updateImageFoodController.text = foodItem['image'];
+                      _getDocumentID();
                       _showAdminEditAlertDialog(foodItem, index);
                     }
                   },
@@ -259,11 +277,8 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
       );
     }
   }
-  _showAdminEditAlertDialog(foodItem, documentId) {
-
-    updateNameNutritionController.text = foodItem['name'];
-    updateImageNutritionController.text = foodItem['image'];
-
+  _showAdminEditAlertDialog(foodItem, foodDocumentId) {
+    _getFoodLenght(foodDocumentId);
     return showDialog(
       // barrierColor: Color(0xff3C615A),
       barrierDismissible: false,
@@ -286,8 +301,8 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      updateImageNutritionController.clear();
-                      updateNameNutritionController.clear();
+                      updateImageFoodController.clear();
+                      updateNameFoodController.clear();
                     },
                     child: Text(
                       'Back',
@@ -308,7 +323,7 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
                 TextField(
                     decoration: InputDecoration(
                         filled: true, fillColor: Colors.white, hintText: 'Food Name'),
-                    controller: updateNameNutritionController),
+                    controller: updateNameFoodController),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
@@ -319,7 +334,7 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
                 TextField(
                   decoration: InputDecoration(
                       filled: true, fillColor: Colors.white, hintText: 'Food Image'),
-                  controller: updateImageNutritionController,
+                  controller: updateImageFoodController,
                 ),
                 Row(
                   children: [
@@ -328,21 +343,21 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
                         style: _buttonStyle(),
                         onPressed: () {
 
-                          Map<String, dynamic> updateFood =
-                          new Map<String, dynamic>();
-                          updateFood['name'] = updateNameNutritionController.text;
-                          updateFood['image'] = 'assets/images/Nutrition/${updateImageNutritionController.text}';
+                          Map<String, dynamic> updateFood = new Map<String, dynamic>();
+                          updateFood['name'] = updateNameFoodController.text;
+                          updateFood['image'] = updateImageFoodController.text;
                           print(updateFood);
                           FirebaseFirestore.instance
                               .collection("nutrition")
                               .doc(widget.name)
-                              .collection(updateFood['name'])
-                              .doc(documentId)
+                              .collection('foods')
+                              .doc(foodId)
                               .update(updateFood)
                               .whenComplete(() {
                             Navigator.pop(context);
-                            updateImageNutritionController.clear();
-                            updateNameNutritionController.clear();
+                            updateImageFoodController.clear();
+                            updateNameFoodController.clear();
+                            foodId = '';
                           });
                         },
                         child: Text('Save Change'),
@@ -363,8 +378,8 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
                               .update(updateFood)
                               .whenComplete(() {
                             Navigator.pop(context);
-                            updateImageNutritionController.clear();
-                            updateNameNutritionController.clear();
+                            updateImageFoodController.clear();
+                            updateNameFoodController.clear();
                           });
                         },
                         child: Text('Delete'),

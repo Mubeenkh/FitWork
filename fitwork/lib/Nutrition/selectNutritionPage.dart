@@ -103,7 +103,7 @@ class _NutritionState extends State<Nutrition> {
 
           StreamBuilder<QuerySnapshot>(
             stream:
-            FirebaseFirestore.instance.collection("nutrition").snapshots(),
+              FirebaseFirestore.instance.collection("nutrition").snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasData) {
