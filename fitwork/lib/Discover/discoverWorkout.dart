@@ -45,7 +45,7 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
     });
     String num = await FirebaseFirestore.instance.collection('workout').doc(widget.name).collection('exercises').doc(list[exerciseIndex]).id;
     // print(list);
-    // print('$exerciseIndex : $num');
+    print('$exerciseIndex : $num');
     exerciseId =  num;
   }
 
@@ -282,8 +282,8 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                           'name': nameController.text,
                           'image': imageController.text
                         };
-                        // _referenceExercises.add(exerciseToAdd);
-                        _referenceExercises.doc(exerciseToAdd['name']).set(exerciseToAdd);
+                        _referenceExercises.add(exerciseToAdd);
+                        // _referenceExercises.doc(exerciseToAdd['name']).set(exerciseToAdd);
                         Navigator.pop(context);
                       },
                       child: Text(
