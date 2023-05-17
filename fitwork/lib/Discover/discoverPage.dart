@@ -261,7 +261,7 @@ class _DiscoverState extends State<Discover> {
 
                       Map<String, dynamic> Workout = new Map<String, dynamic>();
                       Workout['name'] = nameWorkoutController.text;
-                      Workout['image'] = "assets/images/Workout/${imageWorkoutController.text}";
+                      Workout['image'] = imageWorkoutController.text;
                       // //todo: send to database
 
                       FirebaseFirestore.instance

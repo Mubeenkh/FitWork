@@ -36,7 +36,7 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
       // print(exerciseIndex);
     });
   }
-  Future<void> _getDocumentID( name) async {
+  Future<void> _getDocumentID() async {
     List list = [];
     await FirebaseFirestore.instance.collection('workout').doc(widget.name).collection('exercises').get().then((value) {
       for(var val in value.docs){
@@ -149,6 +149,7 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                       updateNameExerciseController.text = exerciseItem['name'];
                       updateImageExerciseController.text = exerciseItem['image'];
                       // String exerciseDocumentId = exerciseItem['name'];
+                      _getDocumentID();
                       _showAdminEditAlertDialog(exerciseItem, index);
                     }
                     // Flushbar(
@@ -230,8 +231,6 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
             // onPrimary: Color(0xff1F3040),
           ),
         onPressed: () {
-
-          // _getDocumentID();
 
           showDialog(
               context: context,
@@ -377,7 +376,8 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                           updateWorkout['image'] = updateImageExerciseController.text;
                           print(updateWorkout);
 
-                          _getDocumentID(exerciseItem['name']);
+                          // _getDocumentID(exerciseItem['name']);
+                          // _getDocumentID();
                           FirebaseFirestore.instance
                               .collection("workout")
                               .doc(widget.name)
@@ -388,6 +388,7 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                             Navigator.pop(context);
                             updateImageExerciseController.clear();
                             updateNameExerciseController.clear();
+                            exerciseId = '';
                           });
 
                         },
