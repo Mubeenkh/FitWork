@@ -406,13 +406,10 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
 
                           FirebaseFirestore.instance
                               .collection("workout")
-                              .doc(updateWorkout['name'])
-                              .update(updateWorkout)
-                              .whenComplete(() {
-                            Navigator.pop(context);
-                            updateImageExerciseController.clear();
-                            updateNameExerciseController.clear();
-                          });
+                              .doc(widget.name)
+                              .collection('exercises')
+                              .doc(exerciseId)
+                              .delete();
                         },
                         child: Text('Delete'),
                       ),
