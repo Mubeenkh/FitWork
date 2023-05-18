@@ -19,6 +19,8 @@ class _SigninPageState extends State<SigninPage> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
 
+  TextEditingController forgotPasswordController = new TextEditingController();
+
   Map<String, dynamic> User = new Map<String, dynamic>();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -99,12 +101,81 @@ class _SigninPageState extends State<SigninPage> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          //sends you to Sign in page
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => SignupPage(),
-                          //     ));
+
+                          showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Color(0xffbad9c1),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Send Password Reset Email"),
+                                  ),
+                                  SizedBox(height: 5,),
+                                  TextField(
+                                    decoration: InputDecoration(
+                                        filled: true, fillColor: Colors.white, hintText: 'email@.com'),
+                                    controller: forgotPasswordController,
+                                  ),
+                                ],
+                              ),
+                              actions: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: ElevatedButton(
+                                    // color: Colors.red,
+                                    style: _buttonStyle(),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "Back",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  style: _buttonStyle(),
+                                  onPressed: () {
+                                    FirebaseAuth.instance.sendPasswordResetEmail(email: forgotPasswordController.text).then((value) {
+                                      Flushbar(
+                                        flushbarPosition: FlushbarPosition.TOP,
+                                        message: "Password Reset Email has been sent",
+                                        icon: Icon(
+                                          Icons.info,
+                                          size: 30.0,
+                                          color: Colors.black,
+                                        ),
+                                        duration: Duration(seconds: 3),
+                                        backgroundGradient: LinearGradient(
+                                          colors: [
+                                            Colors.blue.shade500,
+                                            Colors.blue.shade300,
+                                            Colors.blue.shade100
+                                          ],
+                                          stops: [0.4, 0.7, 1],
+                                        ),
+                                      )..show(context).then((value) {
+                                        forgotPasswordController.clear();
+                                      });
+
+                                    });
+
+
+                                  },
+                                  child: Text(
+                                    "Save",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+
                         },
                         child: Text(
                           'Forgot Password?',
@@ -266,5 +337,20 @@ Widget stackedText(String text, double textSize, double borderSize) {
         ),
       ),
     ],
+  );
+}
+_buttonStyle() {
+  return ElevatedButton.styleFrom(
+    shadowColor: Colors.black,
+    elevation: 20,
+    backgroundColor: Color(0xff5FB28B),
+    side: BorderSide(
+      width: 3,
+      color: Color(0xff3C615A),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+    ),
+    // onPrimary: Color(0xff1F3040),
   );
 }
