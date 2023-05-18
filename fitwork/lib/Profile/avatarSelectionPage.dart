@@ -13,7 +13,6 @@ class avatarSelectionPage extends StatefulWidget {
 
 class _avatarSelectionPageState extends State<avatarSelectionPage> {
   var avatars = [
-    "assets/images/Avatars/bear.png",
     "assets/images/Avatars/cat.png",
     "assets/images/Avatars/chicken.png",
     "assets/images/Avatars/dog.png",
@@ -26,24 +25,30 @@ class _avatarSelectionPageState extends State<avatarSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: avatars.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.6,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4
-      ),
-      itemBuilder: (context, index) => Container(
-        child: GestureDetector(
-          onTap: () {
-            
-          },
-          child: Container(
-            child: Image.asset(avatars[index].toString()),
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.all(5),
+        child: GridView.builder(
+          itemCount: avatars.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 4,
+              mainAxisSpacing: 4
+          ),
+          itemBuilder: (context, index) => Container(
+            child: GestureDetector(
+              onTap: () {
+                
+              },
+              child: Container(
+                child: Image.asset(avatars[index].toString()),
+              ),
+            ),
           ),
         ),
-      ),
+      )
+
     );
   }
 }
