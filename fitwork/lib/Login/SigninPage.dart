@@ -197,7 +197,9 @@ class _SigninPageState extends State<SigninPage> {
                         onPressed: () async {
                           //TODO: SENDS THE USER TO THE HOME PAGE
 
-                          FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
+                          FirebaseAuth.instance.signInWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passwordController.text).then((value) {
                             _fetchData(emailController.text).then((value) {
                               if(emailController.text == User['email']){
                                 Navigator.push(
@@ -217,8 +219,6 @@ class _SigninPageState extends State<SigninPage> {
                                     color: Colors.black,
                                   ),
                                   duration: Duration(seconds: 3),
-                                  // leftBarIndicatorColor: Colors.green[900],
-                                  // backgroundColor: Colors.black54,
                                   backgroundGradient: LinearGradient(
                                     colors: [
                                       Colors.red.shade500,

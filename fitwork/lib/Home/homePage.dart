@@ -165,104 +165,168 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Image.asset(name)
-            Container(
-              height: 100,
-              width: double.infinity,
-              color: Colors.grey[400],
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Workout picture from api',
-                    style: TextStyle(fontSize: 25),
-                  )),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 200,
-                    width: 100,
-                    color: Colors.grey[400],
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Last Workout: Date',
-                          style: TextStyle(fontSize: 25),
-                        )),
+    return Container(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Image.asset(name)
+              Container(
+                height: 150,
+                width: double.infinity,
+                // color: Colors.grey[400],
+                decoration: BoxDecoration(
+                    color: Color(0xffbad9c1),
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    'https://post.healthline.com/wp-content/uploads/2020/02/man-exercising-plank-push-up-1200x628-facebook.jpg',
+                    fit: BoxFit.cover,
+                    
                   ),
                 ),
-                SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                  child: Container(
-                    height: 200,
-                    width: 100,
-                    color: Colors.grey[400],
-                    child: Align(
-                        alignment: Alignment.center, child: quoteWidget()),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => TimerPage()));
-                    },
+                // child: Align(
+                //     alignment: Alignment.center,
+                //     child: Text(
+                //       'Workout picture from api',
+                //       style: TextStyle(fontSize: 25),
+                //     )),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Expanded(
                     child: Container(
                       height: 200,
                       width: 100,
-                      color: Colors.grey[400],
+                      // color: Colors.grey[400],
+                      decoration: BoxDecoration(
+                          color: Color(0xffbad9c1),
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Color(0xff5FB28B),
+                            width: 5
+                          )
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: Image.network(
+                              'https://nypost.com/wp-content/uploads/sites/2/2018/06/180628-skipping-workout-feature.jpg?quality=75&strip=all&w=1024',
+                            fit: BoxFit.cover,
+
+                          ),
+                        ),
+                      ),
+                      // child: Align(
+                      //     alignment: Alignment.center,
+                      //     child: Text(
+                      //       'Last Workout: Date',
+                      //       style: TextStyle(fontSize: 25),
+                      //     )),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: Container(
+                        height: 200,
+                        width: 100,
+                        // color: Colors.grey[400],
+                        decoration: BoxDecoration(
+                          color: Color(0xffbad9c1),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: Color(0xff5FB28B),
+                              width: 5
+                          )
+                        ),
+                        child: Align(
+                            alignment: Alignment.center, child: quoteWidget()),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => TimerPage()));
+                      },
+                      child: Container(
+
+                        height: 200,
+                        width: 100,
+                        // color: Colors.grey[400],
+                        decoration: BoxDecoration(
+                          color: Color(0xffbad9c1),
+                          borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                                color: Color(0xff5FB28B),
+                                width: 5
+                            )
+                        ),
+                        child: Align(
+                            alignment: Alignment.center,
+                            // child: Text(
+                            //   'Timer',
+                            //   style: TextStyle(fontSize: 25),
+                            // ),
+                          child: Icon(
+                            Icons.timer_sharp, size: 100,color: Color(0xff3C615A),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 200,
+                      width: 100,
+                      // color: Colors.grey[400],
+                      decoration: BoxDecoration(
+                          color: Color(0xff5FB28B),
+                          borderRadius: BorderRadius.circular(10)
+                      ),
                       child: Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            'Timer',
-                            style: TextStyle(fontSize: 25),
-                          )),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                  child: Container(
-                    height: 200,
-                    width: 100,
-                    color: Colors.grey[400],
-                    child: Align(
-                        alignment: Alignment.center,
-                    ),
-                    foregroundDecoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          "https://transcode-v2.app.engoo.com/image/fetch/f_auto,c_lfill,w_300,dpr_3/https://assets.app.engoo.com/images/QyDHB4YHkK2V6TA6QkDzSIMbQpg9IIUKO5tn8KuDcJ1.jpeg",
+                      ),
+                      foregroundDecoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            "https://transcode-v2.app.engoo.com/image/fetch/f_auto,c_lfill,w_300,dpr_3/https://assets.app.engoo.com/images/QyDHB4YHkK2V6TA6QkDzSIMbQpg9IIUKO5tn8KuDcJ1.jpeg",
+                          ),
+                          fit: BoxFit.cover,
+
                         ),
-                        fit: BoxFit.cover
-                      )
+                        borderRadius: BorderRadius.circular(10)
+                      ),
                     ),
                   ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -330,4 +394,19 @@ class _quoteWidgetState extends State<quoteWidget> {
 
 
 
+// _buttonStyle() {
+//   return ElevatedButton.styleFrom(
+//     shadowColor: Colors.black,
+//     elevation: 20,
+//     backgroundColor: Color(0xff5FB28B),
+//     side: BorderSide(
+//       width: 3,
+//       color: Color(0xff3C615A),
+//     ),
+//     shape: RoundedRectangleBorder(
+//       borderRadius: BorderRadius.circular(5),
+//     ),
+//     // onPrimary: Color(0xff1F3040),
+//   );
+// }
 
