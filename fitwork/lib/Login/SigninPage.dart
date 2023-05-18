@@ -88,7 +88,7 @@ class _SigninPageState extends State<SigninPage> {
                   height: 20,
                 ),
                 // signInTextField("Password"),
-                LoginWidgets.loginTextField("Password", passwordController),
+                LoginWidgets.passwordTextField("Password", passwordController),
 
                 ///----------------------------------------------------------------
                 //TODO: send user to ForgotPasswordPage()

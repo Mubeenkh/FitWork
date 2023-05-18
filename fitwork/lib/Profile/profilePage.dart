@@ -150,6 +150,7 @@ class _ProfileState extends State<Profile> {
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 onTap: () {
+                  usernameController.text = widget.userInfo['username'];
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
