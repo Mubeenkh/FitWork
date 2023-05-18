@@ -100,7 +100,7 @@ class _ProfileState extends State<Profile> {
       Container(
         child: Column(
           children: [
-            Text(widget.userInfo['email'].toString()),
+            Text(widget.userInfo['email'].toString(),),
             Text(widget.userInfo['username'].toString()),
             Text(widget.userInfo['type'].toString()),
             TextButton(

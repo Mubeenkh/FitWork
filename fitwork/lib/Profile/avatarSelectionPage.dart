@@ -12,6 +12,7 @@ class avatarSelectionPage extends StatefulWidget {
 }
 
 class _avatarSelectionPageState extends State<avatarSelectionPage> {
+
   var avatars = [
     "assets/images/Avatars/cat.png",
     "assets/images/Avatars/chicken.png",
@@ -39,7 +40,7 @@ class _avatarSelectionPageState extends State<avatarSelectionPage> {
           itemBuilder: (context, index) => Container(
             child: GestureDetector(
               onTap: () {
-                
+
               },
               child: Container(
                 child: Image.asset(avatars[index].toString()),
