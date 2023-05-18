@@ -29,7 +29,10 @@ class _StretchesState extends State<Stretches> {
     return Column(
       children: [
         Center(
-          child: Text("Cool Down Stretches",style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Cool Down Stretches",style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          ),
         ),
         _items.isNotEmpty
             ? Expanded(

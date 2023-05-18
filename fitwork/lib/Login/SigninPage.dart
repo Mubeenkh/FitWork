@@ -19,24 +19,21 @@ class _SigninPageState extends State<SigninPage> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
 
-  // static Future<User?> loginUsingEmailPassword(
-  //     {required String email,
-  //     required String password,
-  //     required BuildContext context}) async {
-  //   FirebaseAuth auth = FirebaseAuth.instance;
-  //   User? user;
-  //   try {
-  //     UserCredential userCredential = await auth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //     user = userCredential.user;
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == "user-not-found") {
-  //       print("No user found for that email");
-  //     }
-  //   }
-  //   return user;
-  // }
+  Map<String, dynamic> User = new Map<String, dynamic>();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  Future<void> _fetchData(email) async {
+    DocumentSnapshot documentSnapshot;
+    documentSnapshot = await firestore.collection('user').doc(email).get();
+
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> data =
+      documentSnapshot.data() as Map<String, dynamic>;
+      setState(() {
+        User = data;
+      });
+    }
+  }
 
 
   @override
@@ -134,15 +131,43 @@ class _SigninPageState extends State<SigninPage> {
                           //TODO: SENDS THE USER TO THE HOME PAGE
 
                           // var instance = FirebaseFirestore.instance.collection('users').where(field)
-
                           FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      HomePage(email: emailController.text),
-                                ),
-                              );
+                            _fetchData(emailController.text).then((value) {
+                              if(emailController.text == User['email']){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomePage(email: emailController.text),
+                                  ),
+                                );
+                              }else{
+                                Flushbar(
+                                  flushbarPosition: FlushbarPosition.TOP,
+                                  message: "Please check email",
+
+                                  icon: Icon(
+                                    Icons.info,
+                                    size: 30.0,
+                                    color: Colors.black,
+                                  ),
+                                  duration: Duration(seconds: 3),
+                                  // leftBarIndicatorColor: Colors.green[900],
+                                  // backgroundColor: Colors.black54,
+                                  backgroundGradient: LinearGradient(
+                                    colors: [
+                                      Colors.red.shade500,
+                                      Colors.red.shade300,
+                                      Colors.red.shade100
+                                    ],
+                                    stops: [0.4, 0.7, 1],
+                                  ),
+                                )..show(context);
+                              }
+
+                            });
+
+
                           }).onError((error, stackTrace) {
                             print("Error ${error.toString()}");
                             Flushbar(

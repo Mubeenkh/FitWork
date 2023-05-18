@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import './discoverWorkout.dart';
 
 ///-------------------------------------Discover Page -------------------------------------///
-class Discover extends StatefulWidget {
-  const Discover({
+class Workouts extends StatefulWidget {
+  const Workouts({
     Key? key,
     required this.userInfo,
   }) : super(key: key);
   final Map<String, dynamic> userInfo;
 
   @override
-  State<Discover> createState() => _DiscoverState();
+  State<Workouts> createState() => _WorkoutsState();
 }
 
-class _DiscoverState extends State<Discover> {
+class _WorkoutsState extends State<Workouts> {
   TextEditingController nameWorkoutController = new TextEditingController();
   TextEditingController imageWorkoutController = new TextEditingController();
 

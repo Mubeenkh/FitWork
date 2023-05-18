@@ -152,24 +152,6 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                       _getDocumentID();
                       _showAdminEditAlertDialog(exerciseItem, index);
                     }
-                    // Flushbar(
-                    //   flushbarPosition: FlushbarPosition.TOP,
-                    //   message: "Cannot delete:",
-                    //   icon: Icon(
-                    //     Icons.info,
-                    //     size: 30.0,
-                    //     color: Colors.black,
-                    //   ),
-                    //   duration: Duration(seconds: 3),
-                    //   backgroundGradient: LinearGradient(
-                    //     colors: [
-                    //       Colors.red.shade500,
-                    //       Colors.red.shade300,
-                    //       Colors.red.shade100
-                    //     ],
-                    //     stops: [0.4, 0.7, 1],
-                    //   ),
-                    // )..show(context);
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -331,12 +313,7 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: TextButton(
-                    style: TextButton.styleFrom(
-                      side: BorderSide(
-                        width: 3,
-                        color: Color(0xff3C615A),
-                      ),
-                    ),
+                    style: _TextButtonStyle(),
                     onPressed: () {
                       Navigator.of(context).pop();
                       updateImageExerciseController.clear();
@@ -436,7 +413,14 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
     );
   }
 }
-
+_TextButtonStyle() {
+  return TextButton.styleFrom(
+    side: BorderSide(
+      width: 3,
+      color: Color(0xff3C615A),
+    ),
+  );
+}
 _buttonStyle() {
   return ElevatedButton.styleFrom(
     shadowColor: Colors.black,
@@ -452,91 +436,3 @@ _buttonStyle() {
     // onPrimary: Color(0xff1F3040),
   );
 }
-
-// Widget listStuff(Exercises) {
-//   List<Widget> list = [];
-//
-//   Exercises.forEach(
-//     (key, value) {
-//       print(key);
-//       print(value['stringExample']);
-//       // list.add(new Text(key));
-//       // list.add(new Text(value['stringExample']));
-//       list.add(
-//         new Card(
-//           shape: RoundedRectangleBorder(
-//             side: BorderSide(color: Colors.black54),
-//             borderRadius: BorderRadius.circular(20.0),
-//           ),
-//           child: Container(
-//             padding: EdgeInsets.all(8),
-//             // padding: EdgeInsets.all(20.0),
-//             decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(20.0),
-//               gradient: LinearGradient(
-//                 colors: [
-//                   Color(0xff3C6B62),
-//                   Color(0xff1B2826),
-//                 ],
-//               ),
-//             ),
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   key,
-//                   style: TextStyle(
-//                       fontSize: 30,
-//                       fontWeight: FontWeight.bold,
-//                       color: Colors.white),
-//                 ),
-//                 Image.asset('assets/images/sampleWorkout.png')
-//               ],
-//             ),
-//           ),
-//         ),
-//       );
-//     },
-//   );
-//   return new Column(children: list);
-// }
-
-// Widget cardContent(text) {
-//   return GestureDetector(
-//     onTap: () {
-//       print('workout time');
-//     },
-//     child: Card(
-//       shape: RoundedRectangleBorder(
-//           side: BorderSide(color: Colors.black54),
-//           borderRadius: BorderRadius.circular(5.0),
-//       ),
-//       child: Container(
-//         padding: EdgeInsets.all(8),
-//         decoration: BoxDecoration(
-//           borderRadius: BorderRadius.circular(5.0),
-//           gradient: LinearGradient(
-//             colors: [
-//               Color(0xff3C6B62),
-//               Color(0xff1B2826),
-//             ],
-//           ),
-//         ),
-//         // padding: EdgeInsets.all(20.0),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             Text(
-//               text,
-//               style: TextStyle(
-//                   fontSize: 30,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.white),
-//             ),
-//             Image.asset('assets/images/Workout/leg.jpg')
-//           ],
-//         ),
-//       ),
-//     ),
-//   );
-// }

@@ -16,6 +16,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
 
+  TextEditingController usernameController = new TextEditingController();
+
   Map<String, dynamic> User = new Map<String, dynamic>();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -36,7 +38,6 @@ class _ProfileState extends State<Profile> {
     super.initState();
     // _reload();
     _fetchData();
-
   }
 
   final double coverHeight = 150;
@@ -124,18 +125,232 @@ class _ProfileState extends State<Profile> {
   Widget buildContent() =>
       Container(
         child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(widget.userInfo['email'].toString(),),
-            Text(widget.userInfo['username'].toString()),
-            Text(widget.userInfo['type'].toString()),
-            TextButton(
-              onPressed: () {
-
-              },
-              child: Text("Edit profile")
-              ,
+            Card(
+              color: Color(0xff5FB28B),
+              child: ListTile(
+                // splashColor: Color(0xff3C615A),
+                leading: Icon(Icons.email),
+                iconColor: Color(0xff3C615A),
+                title: Text(
+                  widget.userInfo['email'].toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
             ),
+            Card(
+              color: Color(0xff5FB28B),
+              child: ListTile(
+                trailing: Icon(Icons.autorenew),
+                leading: Icon(Icons.person),
+                iconColor: Color(0xff3C615A),
+                title: Text(
+                  widget.userInfo['username'].toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Color(0xffbad9c1),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Change Username"),
+                              ),
+                              SizedBox(height: 5,),
+                              TextField(
+                                decoration: InputDecoration(
+                                    filled: true, fillColor: Colors.white, hintText: 'Confirm Username'),
+                                controller: usernameController,
+                              ),
+                            ],
+                          ),
+                          actions: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: ElevatedButton(
+                                // color: Colors.red,
+                                style: _buttonStyle(),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  "Back",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: _buttonStyle(),
+                              onPressed: () {
+
+                                if(usernameController.text.isNotEmpty){
+                                  Map<String, dynamic> profile = new Map<String, dynamic>();
+                                  profile = widget.userInfo;
+                                  profile['username'] = usernameController.text;
+                                  FirebaseFirestore.instance.collection('user').doc(profile['email']).update(profile).then((value) {
+                                    Flushbar(
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      message: "Password Reset Email has been sent",
+                                      icon: Icon(
+                                        Icons.info,
+                                        size: 30.0,
+                                        color: Colors.black,
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      backgroundGradient: LinearGradient(
+                                        colors: [
+                                          Colors.blue.shade500,
+                                          Colors.blue.shade300,
+                                          Colors.blue.shade100
+                                        ],
+                                        stops: [0.4, 0.7, 1],
+                                      ),
+                                    )..show(context);
+                                  });
+                                }else{
+                                  Flushbar(
+                                    flushbarPosition: FlushbarPosition.TOP,
+                                    message: "Please fill up criteria",
+                                    icon: Icon(
+                                      Icons.info,
+                                      size: 30.0,
+                                      color: Colors.black,
+                                    ),
+                                    duration: Duration(seconds: 3),
+                                    backgroundGradient: LinearGradient(
+                                      colors: [
+                                        Colors.red.shade500,
+                                        Colors.red.shade300,
+                                        Colors.red.shade100
+                                      ],
+                                      stops: [0.4, 0.7, 1],
+                                    ),
+                                  )..show(context);
+                                }
+                              },
+                              child: Text(
+                                "Save",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                },
+              ),
+            ),
+            Card(
+              color: Color(0xff5FB28B),
+              child: ListTile(
+                leading: Icon(Icons.business_center),
+                iconColor: Color(0xff3C615A),
+                title: Text(
+                  widget.userInfo['type'].toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+            ),
+            Card(
+              color: Color(0xff5FB28B),
+              child: ListTile(
+                leading: Icon(Icons.business_center),
+                trailing: Icon(Icons.autorenew),
+                iconColor: Color(0xff3C615A),
+                title: Text(
+                  'Password',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onTap: () {
+                  FirebaseAuth.instance.sendPasswordResetEmail(email: widget.userInfo['email']).then((value) {
+                    Flushbar(
+                      flushbarPosition: FlushbarPosition.TOP,
+                      message: "Password Reset Email has been sent",
+                      icon: Icon(
+                        Icons.info,
+                        size: 30.0,
+                        color: Colors.black,
+                      ),
+                      duration: Duration(seconds: 3),
+                      backgroundGradient: LinearGradient(
+                        colors: [
+                          Colors.blue.shade500,
+                          Colors.blue.shade300,
+                          Colors.blue.shade100
+                        ],
+                        stops: [0.4, 0.7, 1],
+                      ),
+                    )..show(context);
+                  });
+                },
+              ),
+            ),
+            // TextButton(
+            //   style: _buttonStyle(),
+            //   onPressed: () {
+            //     showDialog(
+            //         context: context,
+            //         builder: (BuildContext context) {
+            //           return AlertDialog(
+            //             backgroundColor: Color(0xffbad9c1),
+            //             content: Column(
+            //               mainAxisSize: MainAxisSize.min,
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: <Widget>[
+            //                 Padding(
+            //                   padding: const EdgeInsets.all(8.0),
+            //                   child: Text("Change Password"),
+            //                 ),
+            //                 SizedBox(height: 5,),
+            //                 TextField(
+            //                   decoration: InputDecoration(
+            //                       filled: true, fillColor: Colors.white, hintText: 'Confirm Password'),
+            //                   controller: usernameController,
+            //                 ),
+            //               ],
+            //             ),
+            //             actions: <Widget>[
+            //               Padding(
+            //                 padding: EdgeInsets.symmetric(horizontal: 10),
+            //                 child: ElevatedButton(
+            //                   // color: Colors.red,
+            //                   style: _buttonStyle(),
+            //                   onPressed: () {
+            //                     Navigator.of(context).pop();
+            //                   },
+            //                   child: Text(
+            //                     "Back",
+            //                     style: TextStyle(color: Colors.white),
+            //                   ),
+            //                 ),
+            //               ),
+            //               ElevatedButton(
+            //                 style: _buttonStyle(),
+            //                 onPressed: () {
+            //
+            //
+            //
+            //                 },
+            //                 child: Text(
+            //                   "Save",
+            //                   style: TextStyle(color: Colors.white),
+            //                 ),
+            //               ),
+            //             ],
+            //           );
+            //         });
+            //   },
+            //   child: Text("Edit profile", style: TextStyle(color: Colors.white))
+            //   ,
+            // ),
             TextButton(
+              style: _buttonStyle(),
               onPressed: () {
                 FirebaseAuth.instance.signOut().then((value) {
                   // print("Sign Out");
@@ -148,9 +363,33 @@ class _ProfileState extends State<Profile> {
                       ));
                 });
               },
-              child: Text('Sign Out'),
+              child: Text('Sign Out', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
       );
+
+}
+_TextButtonStyle() {
+  return TextButton.styleFrom(
+    side: BorderSide(
+      width: 3,
+      color: Color(0xff3C615A),
+    ),
+  );
+}
+_buttonStyle() {
+  return ElevatedButton.styleFrom(
+    shadowColor: Colors.black,
+    elevation: 20,
+    backgroundColor: Color(0xff5FB28B),
+    side: BorderSide(
+      width: 3,
+      color: Color(0xff3C615A),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+    ),
+    // onPrimary: Color(0xff1F3040),
+  );
 }

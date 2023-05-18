@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../Login/loginPage.dart';
-import '../Discover/discoverPage.dart';
-import '../Workout/stretchesPage.dart';
+import '../Workouts/discoverPage.dart';
+import '../Stretches/stretchesPage.dart';
 import '../Home/timerPage.dart';
 import '../Models/Quote.dart';
 import '../Services/quote_service.dart';
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     List<Widget> _widgetOptions = <Widget>[
-      Discover(userInfo: User),
+      Workouts(userInfo: User),
       Stretches(),
       Home(),
       Nutrition(userInfo: User),
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                 Icons.arrow_circle_up,
                 size: 50,
               ),
-              label: 'Discover',
+              label: 'Workout',
               backgroundColor: Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                 Icons.run_circle_outlined,
                 size: 50,
               ),
-              label: 'Workout',
+              label: 'Stretches',
               backgroundColor: Color(0xff3C6B62),
             ),
             BottomNavigationBarItem(
