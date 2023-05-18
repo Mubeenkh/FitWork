@@ -374,13 +374,10 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
 
                           FirebaseFirestore.instance
                               .collection("nutrition")
-                              .doc(updateFood['name'])
-                              .update(updateFood)
-                              .whenComplete(() {
-                            Navigator.pop(context);
-                            updateImageFoodController.clear();
-                            updateNameFoodController.clear();
-                          });
+                              .doc(widget.name)
+                              .collection('foods')
+                              .doc(foodId)
+                              .delete();
                         },
                         child: Text('Delete'),
                       ),
