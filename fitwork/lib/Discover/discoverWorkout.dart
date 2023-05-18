@@ -236,6 +236,7 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
+                  backgroundColor: Color(0xffbad9c1),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,6 +250,8 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                         ),
                       ),
                       TextField(
+                        decoration: InputDecoration(
+                            filled: true, fillColor: Colors.white, hintText: 'Exercise Name'),
                         controller: nameController,
                       ),
                       Padding(
@@ -256,6 +259,8 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                         child: Text("Image: "),
                       ),
                       TextField(
+                        decoration: InputDecoration(
+                            filled: true, fillColor: Colors.white, hintText: 'Exercise Name'),
                         controller: imageController,
                       ),
                     ],
@@ -265,16 +270,18 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: ElevatedButton(
                         // color: Colors.red,
+                        style: _buttonStyle(),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                         child: Text(
-                          "Undo",
+                          "Back",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
                     ElevatedButton(
+                      style: _buttonStyle(),
                       onPressed: () {
                         //TODO: Firestore create a new record code
 
@@ -287,7 +294,7 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        "save",
+                        "Add",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -298,9 +305,12 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
         child: Text('Add Exercise'),
       );
     }else {
-      return Text(
-        '${widget.name} Exercise',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          '${widget.name} Exercise',
+          style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+        ),
       );
     }
   }
@@ -374,7 +384,7 @@ class _DiscoverWorkoutState extends State<DiscoverWorkout> {
                           Map<String, dynamic> updateWorkout = new Map<String, dynamic>();
                           updateWorkout['name'] = updateNameExerciseController.text;
                           updateWorkout['image'] = updateImageExerciseController.text;
-                          print(updateWorkout);
+                          // print(updateWorkout);
 
                           // _getDocumentID(exerciseItem['name']);
                           // _getDocumentID();

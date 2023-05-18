@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class avatarSelectionPage extends StatefulWidget {
-  const avatarSelectionPage({Key? key}) : super(key: key);
-
+  const avatarSelectionPage({Key? key, required this.userProfile}) : super(key: key);
+  final Map<String, dynamic> userProfile;
   @override
   State<avatarSelectionPage> createState() => _avatarSelectionPageState();
 }
@@ -40,6 +40,17 @@ class _avatarSelectionPageState extends State<avatarSelectionPage> {
           itemBuilder: (context, index) => Container(
             child: GestureDetector(
               onTap: () {
+
+                Map<String, dynamic> editAvatar = new Map<String, dynamic>();
+                editAvatar = widget.userProfile;
+                editAvatar['avatar'] = avatars[index];
+                // print(avatars[index]);
+                FirebaseFirestore.instance
+                  .collection('user')
+                  .doc(widget.userProfile['email'])
+                  .update(editAvatar).then((value) {
+                    Navigator.pop(context);
+                });
 
               },
               child: Container(

@@ -15,11 +15,36 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  Map<String, dynamic> User = new Map<String, dynamic>();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Future<void> _fetchData() async {
+    DocumentSnapshot documentSnapshot;
+    documentSnapshot = await firestore.collection('user').doc(widget.userInfo['email']).get();
+
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> data =
+      documentSnapshot.data() as Map<String, dynamic>;
+      setState(() {
+        User = data;
+      });
+    }
+  }
+
+  void initState() {
+    super.initState();
+    // _reload();
+    _fetchData();
+
+  }
+
   final double coverHeight = 150;
   final double avatarHeight = 144;
 
   @override
   Widget build(BuildContext context) {
+    _fetchData();
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -42,7 +67,7 @@ class _ProfileState extends State<Profile> {
         ),
         Positioned(
           top: top,
-          child: showAvatarImage(),
+          child: showAvatarImage(widget.userInfo),
         ),
       ],
     );
@@ -59,13 +84,13 @@ class _ProfileState extends State<Profile> {
         ),
       );
 
-  showAvatarImage() {
+  showAvatarImage(userProfile) {
     if (widget.userInfo['avatar'].toString() != "") {
       // widget.userInfo.clear();
-      print(widget.userInfo);
+      // print(widget.userInfo);
       return GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => avatarSelectionPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => avatarSelectionPage(userProfile: userProfile,)));
         },
         child:    CircleAvatar(
           radius: avatarHeight / 2,
@@ -82,7 +107,7 @@ class _ProfileState extends State<Profile> {
         backgroundColor: Colors.white,
         child: GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => avatarSelectionPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => avatarSelectionPage(userProfile: userProfile,)));
           },
           child: CircleAvatar(
             radius: avatarHeight / 2 - 4,
@@ -113,9 +138,9 @@ class _ProfileState extends State<Profile> {
             TextButton(
               onPressed: () {
                 FirebaseAuth.instance.signOut().then((value) {
-                  print("Sign Out");
+                  // print("Sign Out");
                   widget.userInfo.clear();
-                  print(widget.userInfo);
+                  // print(widget.userInfo);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
