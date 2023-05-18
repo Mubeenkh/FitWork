@@ -71,26 +71,16 @@ class _StretchesState extends State<Stretches> {
                               ),
                             ),
                           ),
-                        )
+                        ),
+                        SizedBox(height: 5,)
                       ],
                     );
                   },
                 ),
               )
             : OutlinedDurationButton(
-              border: Border(
-                bottom: BorderSide(
-                  color: Color(0xff3C615A),
-                ),
-                left: BorderSide(
-                  color: Color(0xff3C615A),
-                ),
-                top: BorderSide(
-                  color: Color(0xff3C615A),
-                ),
-                right: BorderSide(
-                  color: Color(0xff3C615A),
-                )
+              border: Border.all(
+                color: Color(0xff3C615A)
               ),
               coverColor: Color(0xff5FB28B),
               child: Text('Loading...'),
