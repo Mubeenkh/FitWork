@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../Login/loginPage.dart';
 import '../Discover/discoverPage.dart';
-import '../Workout/WorkoutPage.dart';
+import '../Workout/stretchesPage.dart';
 import '../Home/timerPage.dart';
 import '../Models/Quote.dart';
 import '../Services/quote_service.dart';
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
 
     List<Widget> _widgetOptions = <Widget>[
       Discover(userInfo: User),
-      Workout(),
+      Stretches(),
       Home(),
       Nutrition(userInfo: User),
       Profile(userInfo: User),

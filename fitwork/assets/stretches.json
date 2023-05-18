@@ -1,0 +1,44 @@
+{
+  "stretches": [
+    {
+      "id" : "1",
+      "name": "Butterfly Stretch",
+      "image": "assets/images/Stretches/butterfly.jpg"
+    },
+    {
+      "id" : "2",
+      "name": "Calf Stretch",
+      "image": "assets/images/Stretches/calf.jpg"
+    },
+    {
+      "id" : "3",
+      "name": "Downward Dog Stretch",
+      "image": "assets/images/Stretches/dog.jpg"
+    },
+    {
+      "id" : "4",
+      "name": "Hamstring Stretch",
+      "image": "assets/images/Stretches/hamstring.jpg"
+    },
+    {
+      "id" : "5",
+      "name": "Quad Stretch",
+      "image": "assets/images/Stretches/quad.jpg"
+    },
+    {
+      "id" : "6",
+      "name": "Shoulder Stretch",
+      "image": "assets/images/Stretches/shoulder.jpg"
+    },
+    {
+      "id" : "7",
+      "name": "Supine spinal Stretch",
+      "image": "assets/images/Stretches/spine.jpg"
+    },
+    {
+      "id" : "8",
+      "name": "Tricep Stretch",
+      "image": "assets/images/Stretches/tricep.jpg"
+    }
+  ]
+}
