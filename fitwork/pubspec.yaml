@@ -91,6 +91,8 @@ flutter:
     - assets/images/Nutrition/proteins.jpg
     - assets/images/Nutrition/vitamins.jpg
     - assets/images/Nutrition/water.jpg
+    - assets/images/Nutrition/bread.jpg
+    - assets/images/Nutrition/ice.jpg
     - assets/images/Workout/defaultImage.png
     - assets/images/Avatars/cat.png
     - assets/images/Avatars/chicken.png

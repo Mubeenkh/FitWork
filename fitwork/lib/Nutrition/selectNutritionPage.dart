@@ -1,7 +1,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../Nutrition/discoverFoods.dart';
+import './discoverFoods.dart';
 
 
 ///-------------------------------------Nutrition Page -------------------------------------///
@@ -24,6 +24,28 @@ class _NutritionState extends State<Nutrition> {
   new TextEditingController();
   TextEditingController updateImageNutritionController =
   new TextEditingController();
+
+  int foodIndex = 0;
+  String foodId = '';
+  _getFoodLenght(index){
+    setState(() {
+      foodIndex = index;
+      // print(exerciseIndex);
+    });
+  }
+  Future<void> _getDocumentID() async {
+    List list = [];
+    await FirebaseFirestore.instance.collection('nutrition').get().then((value) {
+      for(var val in value.docs){
+        list.add(val.id);
+        // print(val.id);
+      }
+    });
+    String num = await FirebaseFirestore.instance.collection('nutrition').doc(list[foodIndex]).id;
+    // print(list);
+    print('$foodIndex : $num');
+    foodId =  num;
+  }
 
   //for the edit option
   bool _isShow = false;
@@ -80,7 +102,7 @@ class _NutritionState extends State<Nutrition> {
           stops: [0.4, 0.7, 1],
         ),
       )..show(context).then((value) {
-        FirebaseFirestore.instance.collection('nutrition').doc(clickedName).delete();
+        FirebaseFirestore.instance.collection('nutrition').doc(foodId).delete();
       });
     }
   }
@@ -120,6 +142,8 @@ class _NutritionState extends State<Nutrition> {
                           GestureDetector(
                             onTap: () {
                               if (widget.userInfo['type'] == "admin") {
+                                _getFoodLenght(index);
+                                _getDocumentID();
                                 _showAdminClickedCard(snap, index);
                               } else {
                                 Navigator.push(
@@ -263,8 +287,7 @@ class _NutritionState extends State<Nutrition> {
 
                       FirebaseFirestore.instance
                           .collection("nutrition")
-                          .doc(Nutrition['name'])
-                          .set(Nutrition);
+                          .add(Nutrition);
                       Navigator.pop(context);
                       nameNutritionController.clear();
                       imageNutritionController.clear();
@@ -364,7 +387,7 @@ class _NutritionState extends State<Nutrition> {
                             // Update Firestore record information regular way
                             FirebaseFirestore.instance
                                 .collection("nutrition")
-                                .doc(updateNutrition['name'])
+                                .doc(foodId)
                                 .update(updateNutrition)
                                 .whenComplete(() {
                               Navigator.pop(context);

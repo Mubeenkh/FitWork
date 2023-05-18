@@ -41,6 +41,7 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
       }
     });
     String num = await FirebaseFirestore.instance.collection('nutrition').doc(widget.name).collection('foods').doc(list[foodIndex]).id;
+    print('$foodIndex : $num');
     foodId =  num;
   }
 
@@ -60,7 +61,6 @@ class _DiscoverFoodsState extends State<DiscoverFoods> {
                   Navigator.pop(context);
                 },
                 child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Align(
                       alignment: Alignment.centerLeft,
