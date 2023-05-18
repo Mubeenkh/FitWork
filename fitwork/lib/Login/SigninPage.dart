@@ -162,10 +162,7 @@ class _SigninPageState extends State<SigninPage> {
                                       )..show(context).then((value) {
                                         forgotPasswordController.clear();
                                       });
-
                                     });
-
-
                                   },
                                   child: Text(
                                     "Save",
@@ -175,7 +172,6 @@ class _SigninPageState extends State<SigninPage> {
                               ],
                             );
                           });
-
                         },
                         child: Text(
                           'Forgot Password?',
@@ -201,7 +197,6 @@ class _SigninPageState extends State<SigninPage> {
                         onPressed: () async {
                           //TODO: SENDS THE USER TO THE HOME PAGE
 
-                          // var instance = FirebaseFirestore.instance.collection('users').where(field)
                           FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
                             _fetchData(emailController.text).then((value) {
                               if(emailController.text == User['email']){
@@ -216,7 +211,6 @@ class _SigninPageState extends State<SigninPage> {
                                 Flushbar(
                                   flushbarPosition: FlushbarPosition.TOP,
                                   message: "Please check email",
-
                                   icon: Icon(
                                     Icons.info,
                                     size: 30.0,
@@ -235,24 +229,18 @@ class _SigninPageState extends State<SigninPage> {
                                   ),
                                 )..show(context);
                               }
-
                             });
-
-
                           }).onError((error, stackTrace) {
                             print("Error ${error.toString()}");
                             Flushbar(
                               flushbarPosition: FlushbarPosition.TOP,
                               message: "Wrong email and password",
-
                               icon: Icon(
                                 Icons.info,
                                 size: 30.0,
                                 color: Colors.black,
                               ),
                               duration: Duration(seconds: 3),
-                              // leftBarIndicatorColor: Colors.green[900],
-                              // backgroundColor: Colors.black54,
                               backgroundGradient: LinearGradient(
                                 colors: [
                                   Colors.red.shade500,
@@ -263,7 +251,6 @@ class _SigninPageState extends State<SigninPage> {
                               ),
                             )..show(context);
                           });
-
 
                         },
                       ),

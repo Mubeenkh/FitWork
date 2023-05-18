@@ -292,64 +292,6 @@ class _ProfileState extends State<Profile> {
                 },
               ),
             ),
-            // TextButton(
-            //   style: _buttonStyle(),
-            //   onPressed: () {
-            //     showDialog(
-            //         context: context,
-            //         builder: (BuildContext context) {
-            //           return AlertDialog(
-            //             backgroundColor: Color(0xffbad9c1),
-            //             content: Column(
-            //               mainAxisSize: MainAxisSize.min,
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: <Widget>[
-            //                 Padding(
-            //                   padding: const EdgeInsets.all(8.0),
-            //                   child: Text("Change Password"),
-            //                 ),
-            //                 SizedBox(height: 5,),
-            //                 TextField(
-            //                   decoration: InputDecoration(
-            //                       filled: true, fillColor: Colors.white, hintText: 'Confirm Password'),
-            //                   controller: usernameController,
-            //                 ),
-            //               ],
-            //             ),
-            //             actions: <Widget>[
-            //               Padding(
-            //                 padding: EdgeInsets.symmetric(horizontal: 10),
-            //                 child: ElevatedButton(
-            //                   // color: Colors.red,
-            //                   style: _buttonStyle(),
-            //                   onPressed: () {
-            //                     Navigator.of(context).pop();
-            //                   },
-            //                   child: Text(
-            //                     "Back",
-            //                     style: TextStyle(color: Colors.white),
-            //                   ),
-            //                 ),
-            //               ),
-            //               ElevatedButton(
-            //                 style: _buttonStyle(),
-            //                 onPressed: () {
-            //
-            //
-            //
-            //                 },
-            //                 child: Text(
-            //                   "Save",
-            //                   style: TextStyle(color: Colors.white),
-            //                 ),
-            //               ),
-            //             ],
-            //           );
-            //         });
-            //   },
-            //   child: Text("Edit profile", style: TextStyle(color: Colors.white))
-            //   ,
-            // ),
             TextButton(
               style: _buttonStyle(),
               onPressed: () {

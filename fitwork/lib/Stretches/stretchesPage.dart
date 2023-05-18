@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:duration_button/duration_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -76,13 +77,40 @@ class _StretchesState extends State<Stretches> {
                   },
                 ),
               )
-            : ElevatedButton(
-                style: _buttonStyle(),
-                onPressed: () {
-                  readJson();
-                },
-                child: Text("Load Stretches"),
-              )
+            : OutlinedDurationButton(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xff3C615A),
+                ),
+                left: BorderSide(
+                  color: Color(0xff3C615A),
+                ),
+                top: BorderSide(
+                  color: Color(0xff3C615A),
+                ),
+                right: BorderSide(
+                  color: Color(0xff3C615A),
+                )
+              ),
+              coverColor: Color(0xff5FB28B),
+              child: Text('Loading...'),
+              onPressed: () => readJson(),
+              duration: const Duration(seconds: 1),
+            ),
+        // IconDurationButton(
+        //       Icons.favorite,
+        //       size: 30,
+        //       iconColor: Colors.pink,
+        //       onPressed: () => readJson(),
+        //       duration: const Duration(seconds: 2),
+        //     ),
+        // ElevatedButton(
+        //         style: _buttonStyle(),
+        //         onPressed: () {
+        //           readJson();
+        //         },
+        //         child: Text("Load Stretches"),
+        //       )
       ],
     );
   }

@@ -99,17 +99,8 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        body:
-            // Column(
-            //   children: [
-            //     ElevatedButton(
-            //         onPressed: () {
-            //           print(User.length);
-            //         },
-            //         child: Text(User['username'].toString())),
-            _widgetOptions.elementAt(_selectedIndex),
-        //   ],
-        // ),
+        body: _widgetOptions.elementAt(_selectedIndex),
+
         bottomNavigationBar: BottomNavigationBar(
           // backgroundColor: Colors.blueGrey,
           items: const <BottomNavigationBarItem>[
