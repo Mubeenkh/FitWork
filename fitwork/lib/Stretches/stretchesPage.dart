@@ -87,20 +87,6 @@ class _StretchesState extends State<Stretches> {
               onPressed: () => readJson(),
               duration: const Duration(seconds: 1),
             ),
-        // IconDurationButton(
-        //       Icons.favorite,
-        //       size: 30,
-        //       iconColor: Colors.pink,
-        //       onPressed: () => readJson(),
-        //       duration: const Duration(seconds: 2),
-        //     ),
-        // ElevatedButton(
-        //         style: _buttonStyle(),
-        //         onPressed: () {
-        //           readJson();
-        //         },
-        //         child: Text("Load Stretches"),
-        //       )
       ],
     );
   }

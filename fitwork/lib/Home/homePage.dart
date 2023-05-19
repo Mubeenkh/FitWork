@@ -189,12 +189,6 @@ class _HomeState extends State<Home> {
                     
                   ),
                 ),
-                // child: Align(
-                //     alignment: Alignment.center,
-                //     child: Text(
-                //       'Workout picture from api',
-                //       style: TextStyle(fontSize: 25),
-                //     )),
               ),
               SizedBox(
                 height: 20,
@@ -227,12 +221,6 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
-                      // child: Align(
-                      //     alignment: Alignment.center,
-                      //     child: Text(
-                      //       'Last Workout: Date',
-                      //       style: TextStyle(fontSize: 25),
-                      //     )),
                     ),
                   ),
                   SizedBox(
@@ -391,22 +379,4 @@ class _quoteWidgetState extends State<quoteWidget> {
     );
   }
 }
-
-
-
-// _buttonStyle() {
-//   return ElevatedButton.styleFrom(
-//     shadowColor: Colors.black,
-//     elevation: 20,
-//     backgroundColor: Color(0xff5FB28B),
-//     side: BorderSide(
-//       width: 3,
-//       color: Color(0xff3C615A),
-//     ),
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.circular(5),
-//     ),
-//     // onPrimary: Color(0xff1F3040),
-//   );
-// }
 

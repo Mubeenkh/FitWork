@@ -23,12 +23,31 @@ class _TimerPageState extends State<TimerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Timer',
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0),
+        child: AppBar(
+          elevation: 0.0,
+          // automaticallyImplyLeading: false,
+          title: Center(
+            child: Image.asset('assets/images/logo.png',
+                fit: BoxFit.cover, height: 50),
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              // border: Border.all(width: 0),
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color(0xff1F3040),
+                  Color(0xff3C6B62),
+                  Color(0xff5FB28B),
+                  Color(0xff5FB28B),
+                ],
+              ),
+            ),
+          ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Column(
@@ -53,6 +72,7 @@ class _TimerPageState extends State<TimerPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
+                  style: _buttonStyle(),
                   onPressed: () {
                     _stopWatchTimer.onExecute.add(StopWatchExecute.start);
                   },
@@ -62,6 +82,7 @@ class _TimerPageState extends State<TimerPage> {
                   height: 10.0,
                 ),
                 ElevatedButton(
+                  style: _buttonStyle(),
                   onPressed: () {
                     _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
                   },
@@ -70,12 +91,14 @@ class _TimerPageState extends State<TimerPage> {
               ],
             ),
             ElevatedButton(
+              style: _buttonStyle(),
               onPressed: () {
                 _stopWatchTimer.onExecute.add(StopWatchExecute.lap);
               },
               child: Text('Lap'),
             ),
             ElevatedButton(
+              style: _buttonStyle(),
               onPressed: () {
                 _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
               },
@@ -125,4 +148,19 @@ class _TimerPageState extends State<TimerPage> {
       ),
     );
   }
+}
+_buttonStyle() {
+  return ElevatedButton.styleFrom(
+    shadowColor: Colors.black,
+    elevation: 20,
+    backgroundColor: Color(0xff5FB28B),
+    side: BorderSide(
+      width: 3,
+      color: Color(0xff3C615A),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+    ),
+    // onPrimary: Color(0xff1F3040),
+  );
 }
